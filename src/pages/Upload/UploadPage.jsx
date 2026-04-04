@@ -1,13 +1,61 @@
 import React, { useRef } from "react";
-import { Box, Typography, Button, Paper, Stack } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import "../../styles/Upload/UploadPage.css";
+import { parseFile } from "../../utils/fileParser";
+
+const rules = [
+  {
+    iconBg: "var(--accent-soft)",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="#3B6FE8" strokeWidth="2">
+        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+        <path d="M3 9h18M9 21V9"></path>
+      </svg>
+    ),
+    title: "Required Columns",
+    desc: "Asset ID, Owner Name/ID, Risk Engineer, Due Date, Status, Email Address",
+  },
+  {
+    iconBg: "var(--accent2-soft)",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0EA578" strokeWidth="2">
+        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+        <path d="M8 3v18M16 3v18"></path>
+      </svg>
+    ),
+    title: "File Types Allowed",
+    desc: "CSV, XLSX, XLS (Max 50MB)",
+  },
+  {
+    iconBg: "var(--accent3-soft)",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="#F06A1E" strokeWidth="2">
+        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+        <path d="M3 9h18M9 21V9M15 21V9"></path>
+      </svg>
+    ),
+    title: "Date Format",
+    desc: "Due Date should be in YYYY-MM-DD format",
+  },
+];
 
 export default function UploadPage() {
   const fileInputRef = useRef();
 
+  const handleFile = async (file) => {
+    try {
+      const data = await parseFile(file);
+
+      console.log("Parsed Data:", data);
+     
+    } catch (error) {
+      console.error(error);
+      alert("Error parsing file");
+    }
+  };
+
   const handleDrop = (event) => {
     event.preventDefault();
-    event.stopPropagation();
     const files = event.dataTransfer.files;
     if (files && files.length > 0) {
       handleFile(files[0]);
@@ -16,12 +64,6 @@ export default function UploadPage() {
 
   const handleDragOver = (event) => {
     event.preventDefault();
-    event.stopPropagation();
-  };
-
-  const handleFile = (file) => {
-    // TODO: Add file validation and parsing logic here
-    alert(`File selected: ${file.name}`);
   };
 
   const handleFileInputChange = (event) => {
@@ -34,78 +76,71 @@ export default function UploadPage() {
   };
 
   return (
-    <Box sx={{ maxWidth: 500, mx: "auto", mt: 6 }}>
-      <Paper elevation={3} sx={{ p: 4, textAlign: "center" }}>
-        <Typography variant="h5" gutterBottom>
-          Upload Asset File
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+    <div>
+      <div className="ph">
+        <div className="ph-title">Upload Asset File</div>
+        <div className="ph-sub">
           Upload your CSV or XLSX file to start monitoring due dates and
           triggering alerts
-        </Typography>
-
-        <Box
-          sx={{
-            border: "2px dashed #90caf9",
-            borderRadius: 2,
-            p: 4,
-            my: 3,
-            cursor: "pointer",
-            bgcolor: "#f5faff",
-            transition: "background 0.2s",
-            "&:hover": { bgcolor: "#e3f2fd" },
+        </div>
+      </div>
+      <div
+        className="upload-hero"
+        onClick={triggerUpload}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+      >
+        <div className="upload-hero-icon">
+          <CloudUploadIcon style={{ width: 38, height: 38, stroke: "white" }} />
+        </div>
+        <div className="upload-hero-title">Drop your asset file here</div>
+        <div className="upload-hero-sub">
+          Drag & drop your CSV or XLSX file, or click the button below to browse
+        </div>
+        <div className="fmt-row">
+          <span className="fmt">📊 XLSX</span>
+          <span className="fmt">📄 CSV</span>
+          <span className="fmt">📋 XLS</span>
+          <span className="fmt">Max 50MB</span>
+        </div>
+        <div className="upload-divider">
+          <span>or browse from your computer</span>
+        </div>
+        <button
+          className="upload-cta"
+          onClick={(e) => {
+            e.stopPropagation();
+            triggerUpload();
           }}
-          onClick={triggerUpload}
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
         >
-          <CloudUploadIcon sx={{ fontSize: 48, color: "#90caf9" }} />
-          <Typography variant="h6" sx={{ mt: 2 }}>
-            Drop your asset file here
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Drag & drop your CSV or XLSX file, or click the button below to
-            browse
-          </Typography>
-          <Stack
-            direction="row"
-            spacing={2}
-            justifyContent="center"
-            sx={{ mb: 2 }}
-          >
-            <span role="img" aria-label="xlsx">
-              📊 XLSX
-            </span>
-            <span role="img" aria-label="csv">
-              📄 CSV
-            </span>
-            <span role="img" aria-label="xls">
-              📋 XLS
-            </span>
-            <span>Max 50MB</span>
-          </Stack>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            or browse from your computer
-          </Typography>
-          <Button
-            variant="contained"
-            startIcon={<CloudUploadIcon />}
-            onClick={(e) => {
-              e.stopPropagation();
-              triggerUpload();
-            }}
-          >
-            Choose File to Upload
-          </Button>
-          <input
-            type="file"
-            accept=".csv,.xlsx,.xls"
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            onChange={handleFileInputChange}
-          />
-        </Box>
-      </Paper>
-    </Box>
+          <CloudUploadIcon style={{ width: 18, height: 18, stroke: "white" }} />
+          Choose File to Upload
+        </button>
+        <input
+          type="file"
+          accept=".csv,.xlsx,.xls"
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={handleFileInputChange}
+        />
+      </div>
+
+      {/* Upload Rules Section (self-contained) */}
+
+      <div className="upload-rules-section">
+        <div className="upload-text">Required File and Field</div>
+        <div className="upload-rules">
+          {rules.map((rule, idx) => (
+            <div className="rule-card" key={idx}>
+              <div className="rule-icon" style={{ background: rule.iconBg }}>
+                {rule.icon}
+              </div>
+              <div className="rule-title">{rule.title}</div>
+              <div className="rule-desc">{rule.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
