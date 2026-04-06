@@ -2,52 +2,27 @@ import React, { useRef, useState } from "react";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import "../../styles/Upload/UploadPage.css";
 import { parseFile } from "../../utils/fileParser";
-
-const rules = [
-  {
-    iconBg: "var(--accent-soft)",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="#3B6FE8" strokeWidth="2">
-        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-        <path d="M3 9h18M9 21V9"></path>
-      </svg>
-    ),
-    title: "Required Columns",
-    desc: "Asset ID, Owner Name/ID, Risk Engineer, Due Date, Status, Email Address",
-  },
-  {
-    iconBg: "var(--accent2-soft)",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="#0EA578" strokeWidth="2">
-        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-        <path d="M8 3v18M16 3v18"></path>
-      </svg>
-    ),
-    title: "File Types Allowed",
-    desc: "CSV, XLSX, XLS (Max 50MB)",
-  },
-  {
-    iconBg: "var(--accent3-soft)",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="#F06A1E" strokeWidth="2">
-        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-        <path d="M3 9h18M9 21V9M15 21V9"></path>
-      </svg>
-    ),
-    title: "Date Format",
-    desc: "Due Date should be in YYYY-MM-DD format",
-  },
-];
+import EnhancedTable from "../../components/table/EnhancedTable";
+import dayjs from "dayjs";
+import UploadList from "./UploadList";
+import { useDispatch } from "react-redux";
+import { setUploadData } from "../../redux/slice/uploadSlice.js";
 
 export default function UploadPage() {
   const fileInputRef = useRef();
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [fileUploaded, setFileUploaded] = useState(false);
+  const [tableData, setTableData] = useState([]);
+  const [tableColumns, setTableColumns] = useState([]);
+  const [uploadHistory, setUploadHistory] = useState([]);
+  const dispatch = useDispatch();
 
   // Reset upload state
   const handleCancelUpload = () => {
     setUploadedFileName("");
     setFileUploaded(false);
+    setTableData([]);
+    setTableColumns([]);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -56,7 +31,51 @@ export default function UploadPage() {
       setUploadedFileName(file.name);
       setFileUploaded(true);
       const data = await parseFile(file);
-      console.log("Parsed Data:", data);
+      if (data && data.length > 0) {
+        // Find the due date column key (handles "Due Date", "due date", "DueDate", etc.)
+        console.log("Parsed data:", data);
+        const dueDateKey = Object.keys(data[0]).find((key) =>
+          key.toLowerCase().replace(/\s/g, "").includes("duedate"),
+        );
+
+        // Add "Days Remaining" to each row
+        const enrichedData = data.map((row) => ({
+          ...row,
+          "Days Remaining": dueDateKey
+            ? getDaysRemaining(row[dueDateKey])
+            : "N/A",
+        }));
+
+        setTableData(enrichedData);
+        setTableColumns([
+          ...Object.keys(data[0]).map((key) => ({
+            id: key,
+            label: key,
+          })),
+          { id: "Days Remaining", label: "Days Remaining" },
+        ]);
+
+        // Add to upload history
+        setUploadHistory((prev) => [
+          {
+            name: file.name,
+            uploadedAt: dayjs().format("DD MMM YYYY, hh:mm A"),
+          },
+          ...prev,
+        ]);
+
+        // Dispatch upload data to Redux
+        // Store in Redux for Alerts page
+        dispatch(
+          setUploadData({
+            tableData: enrichedData,
+            tableColumns: [
+              ...Object.keys(data[0]).map((key) => ({ id: key, label: key })),
+              { id: "Days Remaining", label: "Days Remaining" },
+            ],
+          }),
+        );
+      }
     } catch (error) {
       console.error(error);
       alert("Error parsing file");
@@ -84,6 +103,40 @@ export default function UploadPage() {
     fileInputRef.current.click();
   };
 
+  const getDaysRemaining = (dueDate) => {
+    return dayjs(dueDate).diff(dayjs(), "day");
+  };
+
+  const handleSendAlerts = () => {
+    const alertRows = tableData.filter((row) => row["Days Remaining"] <= 50);
+
+    if (alertRows.length === 0) {
+      alert("No assets need alerts right now.");
+      return;
+    }
+
+    // Find column keys dynamically (case/space insensitive)
+    const keys = Object.keys(tableData[0]);
+    const ownerKey = keys.find((k) =>
+      k.toLowerCase().replace(/\s/g, "").includes("owner"),
+    );
+    const riskEngineerKey = keys.find((k) =>
+      k.toLowerCase().replace(/\s/g, "").includes("riskengineer"),
+    );
+
+    alertRows.forEach((item) => {
+      const daysLeft = item["Days Remaining"];
+      const assetName = item[tableColumns[0]?.id] || "Unknown";
+      const owner = ownerKey ? item[ownerKey] : "N/A";
+      const riskEngineer = riskEngineerKey ? item[riskEngineerKey] : "N/A";
+
+      console.log(
+        `⚠️ Alert sent for: ${assetName} | Days Remaining: ${daysLeft} | Owner: ${owner} | Risk Engineer: ${riskEngineer}`,
+      );
+    });
+
+    alert(`Alerts processed! ${alertRows.length} asset(s) notified.`);
+  };
   return (
     <div>
       <div className="ph">
@@ -157,21 +210,46 @@ export default function UploadPage() {
           </div>
         )}
       </div>
-      {/* Upload Rules Section (self-contained) */}
-      <div className="upload-rules-section">
-        <div className="upload-text">Required File and Field</div>
-        <div className="upload-rules">
-          {rules.map((rule, idx) => (
-            <div className="rule-card" key={idx}>
-              <div className="rule-icon" style={{ background: rule.iconBg }}>
-                {rule.icon}
-              </div>
-              <div className="rule-title">{rule.title}</div>
-              <div className="rule-desc">{rule.desc}</div>
-            </div>
-          ))}
+
+      {/* Send Alerts Button - show only when data exists */}
+      {tableData.length > 0 && (
+        <div
+          style={{ marginTop: 16, display: "flex", justifyContent: "flex-end" }}
+        >
+          <button
+            onClick={handleSendAlerts}
+            style={{
+              background: "linear-gradient(135deg, #e53935, #d32f2f)",
+              color: "white",
+              border: "none",
+              padding: "10px 24px",
+              borderRadius: "8px",
+              fontSize: "14px",
+              fontWeight: 700,
+              cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(229, 57, 53, 0.3)",
+            }}
+          >
+            🔔 Send Alerts
+          </button>
         </div>
+      )}
+
+      {/* Upload History */}
+      <div style={{ marginTop: 32 }}>
+        <UploadList uploads={uploadHistory} />
       </div>
+
+      {/* Table Section - shows parsed sheet data */}
+      {tableData.length > 0 && (
+        <div style={{ marginTop: 16 }}>
+          <EnhancedTable
+            rows={tableData}
+            headCells={tableColumns}
+            title="Uploaded Asset Data"
+          />
+        </div>
+      )}
     </div>
   );
 }
