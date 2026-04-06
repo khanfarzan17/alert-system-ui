@@ -7,6 +7,8 @@ import dayjs from "dayjs";
 import UploadList from "./UploadList";
 import { useDispatch } from "react-redux";
 import { setUploadData } from "../../redux/slice/uploadSlice.js";
+import { Button, Box, Snackbar, Alert, AlertTitle, Slide } from "@mui/material";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
 export default function UploadPage() {
   const fileInputRef = useRef();
@@ -15,7 +17,22 @@ export default function UploadPage() {
   const [tableData, setTableData] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
   const [uploadHistory, setUploadHistory] = useState([]);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    severity: "success",
+    title: "",
+    message: "",
+  });
   const dispatch = useDispatch();
+
+  const showSnackbar = (severity, title, message) => {
+    setSnackbar({ open: true, severity, title, message });
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") return;
+    setSnackbar((prev) => ({ ...prev, open: false }));
+  };
 
   // Reset upload state
   const handleCancelUpload = () => {
@@ -78,7 +95,11 @@ export default function UploadPage() {
       }
     } catch (error) {
       console.error(error);
-      alert("Error parsing file");
+      showSnackbar(
+        "error",
+        "Upload Failed",
+        "Error parsing file. Please check the format.",
+      );
     }
   };
 
@@ -111,7 +132,11 @@ export default function UploadPage() {
     const alertRows = tableData.filter((row) => row["Days Remaining"] <= 50);
 
     if (alertRows.length === 0) {
-      alert("No assets need alerts right now.");
+      showSnackbar(
+        "warning",
+        "No Alerts Needed",
+        "All assets are within safe limits.",
+      );
       return;
     }
 
@@ -135,7 +160,11 @@ export default function UploadPage() {
       );
     });
 
-    alert(`Alerts processed! ${alertRows.length} asset(s) notified.`);
+    showSnackbar(
+      "success",
+      "Alerts Sent!",
+      `${alertRows.length} asset(s) have been notified successfully.`,
+    );
   };
   return (
     <div>
@@ -211,34 +240,49 @@ export default function UploadPage() {
         )}
       </div>
 
-      {/* Send Alerts Button - show only when data exists */}
-      {tableData.length > 0 && (
-        <div
-          style={{ marginTop: 16, display: "flex", justifyContent: "flex-end" }}
-        >
-          <button
-            onClick={handleSendAlerts}
-            style={{
-              background: "linear-gradient(135deg, #e53935, #d32f2f)",
-              color: "white",
-              border: "none",
-              padding: "10px 24px",
-              borderRadius: "8px",
-              fontSize: "14px",
-              fontWeight: 700,
-              cursor: "pointer",
-              boxShadow: "0 4px 12px rgba(229, 57, 53, 0.3)",
-            }}
-          >
-            🔔 Send Alerts
-          </button>
-        </div>
-      )}
-
       {/* Upload History */}
       <div style={{ marginTop: 32 }}>
         <UploadList uploads={uploadHistory} />
       </div>
+
+      {/* Send Alerts Button - show only when data exists */}
+
+      {tableData.length > 0 && (
+        <Box
+          sx={{
+            mt: 3,
+            mb: 1,
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Button
+            variant="contained"
+            onClick={handleSendAlerts}
+            startIcon={<NotificationsActiveIcon />}
+            sx={{
+              px: 3.5,
+              py: 1.2,
+              borderRadius: 2.5,
+              fontWeight: 700,
+              fontSize: 14,
+              textTransform: "none",
+              background: "linear-gradient(135deg, #388e3c 0%, #2e7d32 100%)",
+              boxShadow: "0 4px 14px rgba(67, 160, 71, 0.35)",
+              transition: "all 0.2s ease-in-out",
+              color: "#fff",
+
+              "&:hover": {
+                background: "linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%)",
+                boxShadow: "0 6px 20px rgba(67, 160, 71, 0.45)",
+                transform: "translateY(-1px)",
+              },
+            }}
+          >
+            Send Alerts
+          </Button>
+        </Box>
+      )}
 
       {/* Table Section - shows parsed sheet data */}
       {tableData.length > 0 && (
@@ -250,6 +294,35 @@ export default function UploadPage() {
           />
         </div>
       )}
+
+      {/* Snackbar Alert */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        TransitionComponent={Slide}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          variant="filled"
+          elevation={6}
+          sx={{
+            minWidth: 320,
+            borderRadius: 3,
+            boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
+            fontSize: 13,
+            "& .MuiAlertTitle-root": {
+              fontWeight: 800,
+              fontSize: 15,
+            },
+          }}
+        >
+          <AlertTitle>{snackbar.title}</AlertTitle>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

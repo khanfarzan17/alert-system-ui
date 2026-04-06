@@ -27,11 +27,11 @@
   gap: 10px;
 }
 .uploaded-file-name-basic {
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 600;
   color: #222;
-  background: #fff;
-  border: 1px solid #e0e7ef;
+  /* background: #fff;
+  border: 1px solid #e0e7ef; */
   border-radius: 6px;
   padding: 7px 16px;
   box-shadow: 0 1px 4px rgba(59, 111, 232, 0.04);
