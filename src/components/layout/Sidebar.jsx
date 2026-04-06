@@ -39,7 +39,7 @@ const Sidebar = () => {
               }`}
             >
               {/* Icon (simple placeholder) */}
-              <span>📁</span>
+              {/* <span>📁</span> */}
 
               {item.name}
 

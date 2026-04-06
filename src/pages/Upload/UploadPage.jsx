@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import "../../styles/Upload/UploadPage.css";
 import { parseFile } from "../../utils/fileParser";
@@ -41,13 +41,22 @@ const rules = [
 
 export default function UploadPage() {
   const fileInputRef = useRef();
+  const [uploadedFileName, setUploadedFileName] = useState("");
+  const [fileUploaded, setFileUploaded] = useState(false);
+
+  // Reset upload state
+  const handleCancelUpload = () => {
+    setUploadedFileName("");
+    setFileUploaded(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
 
   const handleFile = async (file) => {
     try {
+      setUploadedFileName(file.name);
+      setFileUploaded(true);
       const data = await parseFile(file);
-
       console.log("Parsed Data:", data);
-     
     } catch (error) {
       console.error(error);
       alert("Error parsing file");
@@ -86,47 +95,69 @@ export default function UploadPage() {
       </div>
       <div
         className="upload-hero"
-        onClick={triggerUpload}
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
+        onClick={!fileUploaded ? triggerUpload : undefined}
+        onDrop={!fileUploaded ? handleDrop : undefined}
+        onDragOver={!fileUploaded ? handleDragOver : undefined}
+        style={{ cursor: fileUploaded ? "default" : "pointer" }}
       >
-        <div className="upload-hero-icon">
-          <CloudUploadIcon style={{ width: 38, height: 38, stroke: "white" }} />
-        </div>
-        <div className="upload-hero-title">Drop your asset file here</div>
-        <div className="upload-hero-sub">
-          Drag & drop your CSV or XLSX file, or click the button below to browse
-        </div>
-        <div className="fmt-row">
-          <span className="fmt">📊 XLSX</span>
-          <span className="fmt">📄 CSV</span>
-          <span className="fmt">📋 XLS</span>
-          <span className="fmt">Max 50MB</span>
-        </div>
-        <div className="upload-divider">
-          <span>or browse from your computer</span>
-        </div>
-        <button
-          className="upload-cta"
-          onClick={(e) => {
-            e.stopPropagation();
-            triggerUpload();
-          }}
-        >
-          <CloudUploadIcon style={{ width: 18, height: 18, stroke: "white" }} />
-          Choose File to Upload
-        </button>
-        <input
-          type="file"
-          accept=".csv,.xlsx,.xls"
-          ref={fileInputRef}
-          style={{ display: "none" }}
-          onChange={handleFileInputChange}
-        />
+        {!fileUploaded ? (
+          <>
+            <div className="upload-hero-icon">
+              <CloudUploadIcon
+                style={{ width: 38, height: 38, stroke: "white" }}
+              />
+            </div>
+            <div className="upload-hero-title">Drop your asset file here</div>
+            <div className="upload-hero-sub">
+              Drag & drop your CSV or XLSX file, or click the button below to
+              browse
+            </div>
+            <div className="fmt-row">
+              <span className="fmt">📊 XLSX</span>
+              <span className="fmt">📄 CSV</span>
+              <span className="fmt">📋 XLS</span>
+              <span className="fmt">Max 50MB</span>
+            </div>
+            <div className="upload-divider">
+              <span>or browse from your computer</span>
+            </div>
+            <button
+              className="upload-cta"
+              onClick={(e) => {
+                e.stopPropagation();
+                triggerUpload();
+              }}
+            >
+              <CloudUploadIcon
+                style={{ width: 18, height: 18, stroke: "white" }}
+              />
+              Choose File to Upload
+            </button>
+            <input
+              type="file"
+              accept=".csv,.xlsx,.xls"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              onChange={handleFileInputChange}
+            />
+          </>
+        ) : (
+          <div
+            className="uploaded-file-row"
+            style={{ justifyContent: "center", marginTop: 24 }}
+          >
+            <span className="uploaded-file-name-basic">{uploadedFileName}</span>
+            <button
+              className="cancel-upload-btn-basic"
+              onClick={handleCancelUpload}
+              title="Cancel Upload"
+            >
+              ✕
+            </button>
+          </div>
+        )}
       </div>
-
       {/* Upload Rules Section (self-contained) */}
-
       <div className="upload-rules-section">
         <div className="upload-text">Required File and Field</div>
         <div className="upload-rules">
