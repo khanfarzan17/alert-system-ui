@@ -9,6 +9,7 @@ const Topbar = () => {
     { name: "Dashboard", path: "/dashboard" },
     { name: "Upload", path: "/upload" },
     { name: "Alerts", path: "/alerts" },
+    { name: "Assets", path: "/assets" },
     { name: "Settings", path: "/settings" },
   ];
 

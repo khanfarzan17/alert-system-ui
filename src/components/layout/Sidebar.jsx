@@ -17,6 +17,7 @@ const Sidebar = () => {
       section: "MANAGEMENT",
       items: [
         { name: "Alerts", path: "/alerts", badge: "5", badgeType: "r" },
+        { name: "Assets", path: "/assets", badge: null },
         { name: "Settings", path: "/settings", badge: null },
       ],
     },

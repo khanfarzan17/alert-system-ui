@@ -2,9 +2,9 @@ import React, { useRef, useState } from "react";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import "../../styles/Upload/UploadPage.css";
 import { parseFile } from "../../utils/fileParser";
-import EnhancedTable from "../../components/table/EnhancedTable";
 import dayjs from "dayjs";
 import UploadList from "./UploadList";
+import UploadRules from "./UploadRules";
 import { useDispatch } from "react-redux";
 import { setUploadData } from "../../redux/slice/uploadSlice.js";
 import { Button, Box, Snackbar, Alert, AlertTitle, Slide } from "@mui/material";
@@ -240,60 +240,167 @@ export default function UploadPage() {
         )}
       </div>
 
+      {/* Upload Rules - only when no file uploaded */}
+      {!fileUploaded && <UploadRules />}
+
+      {/* Alert Banner - show only when data exists */}
+
+      {tableData.length > 0 &&
+        (() => {
+          const overdueCount = tableData.filter(
+            (r) => r["Days Remaining"] !== "N/A" && r["Days Remaining"] <= 0,
+          ).length;
+          const dueSoonCount = tableData.filter(
+            (r) =>
+              r["Days Remaining"] !== "N/A" &&
+              r["Days Remaining"] > 0 &&
+              r["Days Remaining"] <= 50,
+          ).length;
+          return (
+            <Box
+              sx={{
+                mt: 3,
+                mb: 1,
+                background:
+                  "linear-gradient(135deg, #166534 0%, #16a34a 50%,  #166534 100%)",
+                borderRadius: "14px",
+                padding: "16px 24px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                boxShadow: "0 4px 20px rgba(27, 94, 32, 0.3)",
+              }}
+            >
+              {/* Left: icon + text */}
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                <Box
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: "10px",
+                    background: "rgba(255,255,255,0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <NotificationsActiveIcon
+                    sx={{ color: "#ffffff", fontSize: 22 }}
+                  />
+                </Box>
+                <Box>
+                  <Box sx={{ color: "#fff", fontWeight: 700, fontSize: 14 }}>
+                    File ready — send your alerts now
+                  </Box>
+                  <Box
+                    sx={{
+                      color: "rgba(255,255,255,0.7)",
+                      fontSize: 12,
+                      mt: 0.25,
+                    }}
+                  >
+                    {uploadedFileName} · {tableData.length} assets detected
+                  </Box>
+                </Box>
+              </Box>
+
+              {/* Right: badges + button */}
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                <Box
+                  sx={{
+                    background: "rgba(255,255,255,0.12)",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    borderRadius: "10px",
+                    px: 2,
+                    py: 0.8,
+                    textAlign: "center",
+                    minWidth: 56,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      color: "#ffffff",
+                      fontWeight: 800,
+                      fontSize: 18,
+                      lineHeight: 1,
+                    }}
+                  >
+                    {overdueCount}
+                  </Box>
+                  <Box
+                    sx={{
+                      color: "#ffffff",
+                      fontSize: 10,
+                      fontWeight: 600,
+                      mt: 0.3,
+                    }}
+                  >
+                    overdue
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    background: "rgba(255,255,255,0.12)",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    borderRadius: "10px",
+                    px: 2,
+                    py: 0.8,
+                    textAlign: "center",
+                    minWidth: 56,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      color: "#ffffff",
+                      fontWeight: 800,
+                      fontSize: 18,
+                      lineHeight: 1,
+                    }}
+                  >
+                    {dueSoonCount}
+                  </Box>
+                  <Box
+                    sx={{
+                      color: "#ffffff",
+                      fontSize: 10,
+                      fontWeight: 600,
+                      mt: 0.3,
+                    }}
+                  >
+                    due soon
+                  </Box>
+                </Box>
+                <Button
+                  variant="contained"
+                  onClick={handleSendAlerts}
+                  sx={{
+                    ml: 1,
+                    px: 3,
+                    py: 1.1,
+                    borderRadius: "10px",
+                    fontWeight: 700,
+                    fontSize: 13,
+                    textTransform: "none",
+                    background: "#419146",
+                    color: "#ffffff",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                    "&:hover": {
+                      background: "#f1f8e9",
+                      boxShadow: "0 4px 14px rgba(0,0,0,0.2)",
+                    },
+                  }}
+                >
+                  Send Alerts
+                </Button>
+              </Box>
+            </Box>
+          );
+        })()}
+
       {/* Upload History */}
       <div style={{ marginTop: 32 }}>
         <UploadList uploads={uploadHistory} />
       </div>
-
-      {/* Send Alerts Button - show only when data exists */}
-
-      {tableData.length > 0 && (
-        <Box
-          sx={{
-            mt: 3,
-            mb: 1,
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Button
-            variant="contained"
-            onClick={handleSendAlerts}
-            startIcon={<NotificationsActiveIcon />}
-            sx={{
-              px: 3.5,
-              py: 1.2,
-              borderRadius: 2.5,
-              fontWeight: 700,
-              fontSize: 14,
-              textTransform: "none",
-              background: "linear-gradient(135deg, #388e3c 0%, #2e7d32 100%)",
-              boxShadow: "0 4px 14px rgba(67, 160, 71, 0.35)",
-              transition: "all 0.2s ease-in-out",
-              color: "#fff",
-
-              "&:hover": {
-                background: "linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%)",
-                boxShadow: "0 6px 20px rgba(67, 160, 71, 0.45)",
-                transform: "translateY(-1px)",
-              },
-            }}
-          >
-            Send Alerts
-          </Button>
-        </Box>
-      )}
-
-      {/* Table Section - shows parsed sheet data */}
-      {tableData.length > 0 && (
-        <div style={{ marginTop: 16 }}>
-          <EnhancedTable
-            rows={tableData}
-            headCells={tableColumns}
-            title="Uploaded Asset Data"
-          />
-        </div>
-      )}
 
       {/* Snackbar Alert */}
       <Snackbar

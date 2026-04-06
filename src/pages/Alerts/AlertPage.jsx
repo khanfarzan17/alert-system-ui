@@ -71,8 +71,10 @@ const AlertPage = () => {
   return (
     <div className="alert-page">
       {/* Header */}
+
       <div className="alert-header">
         <h1>Alerts</h1>
+
         <div className="alert-summary">
           <span className="dot"></span>
           {alertData.length} active
