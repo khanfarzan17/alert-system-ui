@@ -13,7 +13,7 @@ const LoginPage = () => {
     if (email === "admin@example.com" && password === "admin123") {
       setError("");
 
-      navigate("/dashboard");
+      navigate("/upload");
     } else {
       setError("Invalid email or password");
     }

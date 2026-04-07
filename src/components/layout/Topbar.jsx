@@ -12,8 +12,8 @@ const Topbar = () => {
   const { theme, toggleTheme } = useTheme();
 
   const navItems = [
-    { name: "Dashboard", path: "/dashboard" },
     { name: "Upload", path: "/upload" },
+    { name: "Dashboard", path: "/dashboard" },
     { name: "Alerts", path: "/alerts" },
     { name: "Assets", path: "/assets" },
     { name: "Settings", path: "/settings" },
@@ -67,12 +67,6 @@ const Topbar = () => {
             )}
           </IconButton>
         </Tooltip>
-
-        {/* Notification */}
-        {/* <div className="icon-btn">
-          🔔
-          <span className="notif-dot"></span>
-        </div> */}
 
         {/* Avatar */}
         <div className="avatar">FK</div>

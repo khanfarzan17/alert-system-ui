@@ -23,8 +23,8 @@ const Sidebar = () => {
     {
       section: "MAIN",
       items: [
-        { name: "Dashboard", path: "/dashboard", badge: null },
         { name: "Upload", path: "/upload", badge: null },
+        { name: "Dashboard", path: "/dashboard", badge: null },
       ],
     },
     {

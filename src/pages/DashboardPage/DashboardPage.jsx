@@ -6,6 +6,7 @@ import "../../styles/Dashboard/DashboardPage.css";
 import DatasetIcon from "@mui/icons-material/Dataset";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import MailRoundedIcon from "@mui/icons-material/MailRounded";
 const findKey = (keys, match) =>
   keys.find((k) => k.toLowerCase().replace(/\s/g, "").includes(match));
 
@@ -99,9 +100,7 @@ const DashboardPage = () => {
             </div>
           </div>
           <div className="dash-card-value blue">{total}</div>
-          <div className="dash-card-footer">
-            <span className="blue">+{total}</span> from last upload
-          </div>
+          <div className="dash-card-footer"> Total Assests </div>
         </div>
 
         <div
@@ -134,6 +133,17 @@ const DashboardPage = () => {
           </div>
           <div className="dash-card-value red">{criticalCount}</div>
           <div className="dash-card-footer">Immediate action</div>
+        </div>
+
+        <div className="dash-card green">
+          <div className="dash-card-top">
+            <span className="dash-card-label">Email Sent</span>
+            <div className="dash-card-icon green">
+              <MailRoundedIcon />
+            </div>
+          </div>
+          <div className="dash-card-value green">{alertCount}</div>
+          <div className="dash-card-footer">Delivery Rate</div>
         </div>
       </div>
 
