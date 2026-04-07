@@ -1,9 +1,15 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
 import "../../styles/topbar/topbar.css";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
+import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 
 const Topbar = () => {
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   const navItems = [
     { name: "Dashboard", path: "/dashboard" },
@@ -19,7 +25,7 @@ const Topbar = () => {
       <div className="logo">
         <div className="logo-mark">⚡</div>
         <div className="logo-text">
-          Alert<span>System</span>
+          Alert<span>IQ</span>
         </div>
       </div>
 
@@ -38,11 +44,35 @@ const Topbar = () => {
 
       {/* Right Section */}
       <div className="top-right">
+        {/* Theme Toggle */}
+        {/* <button
+          className="icon-btn"
+          onClick={toggleTheme}
+          title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+        >
+          {theme === "light" ? "🌙" : "☀️"}
+        </button> */}
+
+        <Tooltip
+          title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+        >
+          <IconButton
+            onClick={toggleTheme}
+            style={{ color: theme === "light" ? "#333" : "#f1f5f9" }}
+          >
+            {theme === "light" ? (
+              <DarkModeRoundedIcon />
+            ) : (
+              <LightModeRoundedIcon />
+            )}
+          </IconButton>
+        </Tooltip>
+
         {/* Notification */}
-        <div className="icon-btn">
+        {/* <div className="icon-btn">
           🔔
           <span className="notif-dot"></span>
-        </div>
+        </div> */}
 
         {/* Avatar */}
         <div className="avatar">FK</div>

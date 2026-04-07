@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import "../../styles/Alerts/AlertPage.css";
 import EmptyAlerts from "./EmptyAlert";
-
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 // Helper: find column key case/space insensitively
 const findKey = (keys, match) =>
   keys.find((k) => k.toLowerCase().replace(/\s/g, "").includes(match));
@@ -118,7 +119,11 @@ const AlertPage = () => {
               <div
                 className={`alert-icon ${isCritical ? "critical" : "warning"}`}
               >
-                {isCritical ? "\u26A0" : "\uD83D\uDD14"}
+                {isCritical ? (
+                  <WarningAmberIcon />
+                ) : (
+                  <NotificationsActiveIcon />
+                )}
               </div>
 
               {/* Content */}

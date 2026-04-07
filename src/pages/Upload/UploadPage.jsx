@@ -5,8 +5,11 @@ import { parseFile } from "../../utils/fileParser";
 import dayjs from "dayjs";
 import UploadList from "./UploadList";
 import UploadRules from "./UploadRules";
-import { useDispatch } from "react-redux";
-import { setUploadData } from "../../redux/slice/uploadSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setUploadData,
+  addUploadHistory,
+} from "../../redux/slice/uploadSlice.js";
 import { Button, Box, Snackbar, Alert, AlertTitle, Slide } from "@mui/material";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
@@ -16,7 +19,7 @@ export default function UploadPage() {
   const [fileUploaded, setFileUploaded] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
-  const [uploadHistory, setUploadHistory] = useState([]);
+  const uploadHistory = useSelector((state) => state.upload.uploadHistory);
   const [snackbar, setSnackbar] = useState({
     open: false,
     severity: "success",
@@ -73,13 +76,12 @@ export default function UploadPage() {
         ]);
 
         // Add to upload history
-        setUploadHistory((prev) => [
-          {
+        dispatch(
+          addUploadHistory({
             name: file.name,
             uploadedAt: dayjs().format("DD MMM YYYY, hh:mm A"),
-          },
-          ...prev,
-        ]);
+          }),
+        );
 
         // Dispatch upload data to Redux
         // Store in Redux for Alerts page
@@ -374,20 +376,17 @@ export default function UploadPage() {
                   variant="contained"
                   onClick={handleSendAlerts}
                   sx={{
-                    ml: 1,
-                    px: 3,
-                    py: 1.1,
-                    borderRadius: "10px",
-                    fontWeight: 700,
-                    fontSize: 13,
+                    background: "#fff",
+                    color: "#1B5E20",
+                    fontWeight: 800,
+                    fontSize: 11,
                     textTransform: "none",
-                    background: "#419146",
-                    color: "#ffffff",
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                    "&:hover": {
-                      background: "#f1f8e9",
-                      boxShadow: "0 4px 14px rgba(0,0,0,0.2)",
-                    },
+                    borderRadius: 2,
+                    px: 1.75,
+                    py: 0.75,
+                    letterSpacing: 0.3,
+                    flexShrink: 0,
+                    "&:hover": { background: "#F1F8F1" },
                   }}
                 >
                   Send Alerts

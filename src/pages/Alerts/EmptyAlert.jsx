@@ -9,7 +9,7 @@ export default function EmptyAlerts({ onUploadClick }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+        background: "var(--bg)",
       }}
     >
       <Paper
@@ -20,6 +20,8 @@ export default function EmptyAlerts({ onUploadClick }) {
           borderRadius: 3,
           maxWidth: 400,
           transition: "0.3s",
+          bgcolor: "var(--surface)",
+          color: "var(--text1)",
           "&:hover": { transform: "translateY(-4px)" },
         }}
       >

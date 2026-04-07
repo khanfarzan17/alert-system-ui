@@ -3,7 +3,9 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import "../../styles/Dashboard/DashboardPage.css";
-
+import DatasetIcon from "@mui/icons-material/Dataset";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 const findKey = (keys, match) =>
   keys.find((k) => k.toLowerCase().replace(/\s/g, "").includes(match));
 
@@ -92,7 +94,9 @@ const DashboardPage = () => {
         <div className="dash-card blue">
           <div className="dash-card-top">
             <span className="dash-card-label">Total Assets</span>
-            <div className="dash-card-icon blue">{"\uD83D\uDCE6"}</div>
+            <div className="dash-card-icon blue">
+              <DatasetIcon />
+            </div>
           </div>
           <div className="dash-card-value blue">{total}</div>
           <div className="dash-card-footer">
@@ -107,7 +111,9 @@ const DashboardPage = () => {
         >
           <div className="dash-card-top">
             <span className="dash-card-label">Due {"\u2264"} 50 Days</span>
-            <div className="dash-card-icon orange">{"\uD83D\uDD14"}</div>
+            <div className="dash-card-icon orange">
+              <NotificationsActiveIcon />
+            </div>
           </div>
           <div className="dash-card-value orange">{alertCount}</div>
           <div className="dash-card-footer">Alerts triggered</div>
@@ -122,7 +128,9 @@ const DashboardPage = () => {
             <span className="dash-card-label">
               Critical ({"\u2264"}10 Days)
             </span>
-            <div className="dash-card-icon red">{"\u26A0\uFE0F"}</div>
+            <div className="dash-card-icon red">
+              <WarningAmberIcon />
+            </div>
           </div>
           <div className="dash-card-value red">{criticalCount}</div>
           <div className="dash-card-footer">Immediate action</div>

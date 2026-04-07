@@ -13,7 +13,7 @@
 
 .dash-sub {
   font-size: 13px;
-  color: #888;
+  color: var(--text3);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -28,7 +28,7 @@
 }
 
 .dash-sub .sep {
-  color: #ccc;
+  color: var(--text4);
 }
 
 /* -- Stat Cards -- */
@@ -40,8 +40,8 @@
 }
 
 .dash-card {
-  background: #fff;
-  border: 1px solid #eaeaea;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 14px;
   padding: 20px 22px;
   position: relative;
@@ -85,7 +85,7 @@
 .dash-card-label {
   font-size: 13px;
   font-weight: 600;
-  color: #888;
+  color: var(--text3);
 }
 
 .dash-card-icon {
@@ -99,19 +99,19 @@
 }
 
 .dash-card-icon.blue {
-  background: #eff6ff;
+  background: var(--accent-soft);
   color: #3b82f6;
 }
 .dash-card-icon.orange {
-  background: #fff7ed;
+  background: var(--warn-soft);
   color: #f97316;
 }
 .dash-card-icon.red {
-  background: #fef2f2;
+  background: var(--danger-soft);
   color: #ef4444;
 }
 .dash-card-icon.green {
-  background: #f0fdf4;
+  background: var(--success-soft);
   color: #22c55e;
 }
 
@@ -136,7 +136,7 @@
 
 .dash-card-footer {
   font-size: 12px;
-  color: #aaa;
+  color: var(--text3);
   margin-top: 6px;
 }
 
@@ -159,8 +159,8 @@
 
 /* -- Monitor Table -- */
 .dash-monitor {
-  background: #fff;
-  border: 1px solid #eaeaea;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 14px;
   padding: 22px 24px;
 }
@@ -176,22 +176,22 @@
   font-size: 16px;
   font-weight: 700;
   margin: 0;
-  color: #1a1a1a;
+  color: var(--text1);
 }
 
 .btn-view-all {
   font-size: 12.5px;
   font-weight: 600;
-  color: #3b82f6;
+  color: var(--accent);
   background: none;
-  border: 1.5px solid #3b82f6;
+  border: 1.5px solid var(--accent);
   border-radius: 20px;
   padding: 5px 14px;
   cursor: pointer;
   transition: all 0.15s;
 }
 .btn-view-all:hover {
-  background: #eff6ff;
+  background: var(--accent-soft);
 }
 
 .monitor-table {
@@ -202,19 +202,19 @@
 .monitor-table th {
   font-size: 11px;
   font-weight: 700;
-  color: #aaa;
+  color: var(--text3);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   text-align: left;
   padding: 0 10px 12px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--border);
 }
 
 .monitor-table td {
   font-size: 13.5px;
   padding: 14px 10px;
-  border-bottom: 1px solid #f5f5f5;
-  color: #333;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
 }
 
 .monitor-table tr:last-child td {
@@ -260,7 +260,7 @@
 .days-bar {
   width: 80px;
   height: 5px;
-  background: #f0f0f0;
+  background: var(--surface2);
   border-radius: 10px;
   overflow: hidden;
 }
@@ -298,21 +298,21 @@
 
 .status-badge.critical {
   color: #ef4444;
-  background: #fef2f2;
+  background: var(--danger-soft);
 }
 .status-badge.critical .dot {
   background: #ef4444;
 }
 .status-badge.warning {
   color: #f97316;
-  background: #fff7ed;
+  background: var(--warn-soft);
 }
 .status-badge.warning .dot {
   background: #f97316;
 }
 .status-badge.safe {
   color: #22c55e;
-  background: #f0fdf4;
+  background: var(--success-soft);
 }
 .status-badge.safe .dot {
   background: #22c55e;
@@ -326,8 +326,8 @@
 }
 
 .dash-cron {
-  background: #fff;
-  border: 1px solid #eaeaea;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 14px;
   padding: 20px 22px;
 }
@@ -343,7 +343,7 @@
   font-size: 15px;
   font-weight: 700;
   margin: 0;
-  color: #1a1a1a;
+  color: var(--text1);
 }
 
 .badge-active {
@@ -363,7 +363,7 @@
 }
 
 .cron-card {
-  background: #f0fdf4;
+  background: var(--success-soft);
   border-radius: 10px;
   padding: 16px;
 }
@@ -371,7 +371,7 @@
 .cron-card-title {
   font-size: 14px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--text1);
   margin-bottom: 6px;
   display: flex;
   align-items: center;
@@ -387,7 +387,7 @@
 
 .cron-card-detail {
   font-size: 11.5px;
-  color: #666;
+  color: var(--text2);
   font-family: "SF Mono", "Consolas", monospace;
   display: flex;
   align-items: center;
@@ -402,8 +402,8 @@
 
 /* Recent Activity */
 .dash-activity {
-  background: #fff;
-  border: 1px solid #eaeaea;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 14px;
   padding: 20px 22px;
 }
@@ -419,22 +419,22 @@
   font-size: 15px;
   font-weight: 700;
   margin: 0;
-  color: #1a1a1a;
+  color: var(--text1);
 }
 
 .btn-logs {
   font-size: 12px;
   font-weight: 600;
-  color: #3b82f6;
+  color: var(--accent);
   background: none;
-  border: 1.5px solid #e0e0e0;
+  border: 1.5px solid var(--border);
   border-radius: 20px;
   padding: 4px 12px;
   cursor: pointer;
 }
 .btn-logs:hover {
-  border-color: #3b82f6;
-  background: #eff6ff;
+  border-color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .activity-item {
@@ -442,7 +442,7 @@
   align-items: flex-start;
   gap: 10px;
   padding: 10px 0;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid var(--border);
 }
 .activity-item:last-child {
   border-bottom: none;
@@ -462,19 +462,19 @@
 }
 .activity-text strong {
   font-size: 13px;
-  color: #1a1a1a;
+  color: var(--text1);
   display: block;
 }
 .activity-text span {
   font-size: 11.5px;
-  color: #999;
+  color: var(--text3);
 }
 
 /* Empty */
 .dash-empty {
   text-align: center;
   padding: 60px 20px;
-  color: #999;
+  color: var(--text3);
 }
 .dash-empty-icon {
   font-size: 48px;
@@ -483,7 +483,7 @@
 .dash-empty h2 {
   font-size: 20px;
   font-weight: 700;
-  color: #666;
+  color: var(--text2);
   margin: 0 0 6px;
 }
 .dash-empty p {

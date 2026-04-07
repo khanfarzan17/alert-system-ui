@@ -13,7 +13,7 @@
 
 .alert-summary {
   font-size: 13px;
-  color: #666;
+  color: var(--text2);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -28,7 +28,7 @@
 }
 
 .alert-summary .sep {
-  color: #ccc;
+  color: var(--text4);
 }
 
 /* Filter Tabs */
@@ -44,22 +44,23 @@
   font-weight: 600;
   padding: 6px 16px;
   border-radius: 20px;
-  border: 1.5px solid #e0e0e0;
-  background: #fff;
-  color: #555;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text2);
   cursor: pointer;
   transition: all 0.15s;
 }
 
 .alert-filter-btn:hover {
-  border-color: #aaa;
-  color: #222;
+  border-color: var(--text3);
+  color: var(--text1);
 }
 
 .alert-filter-btn.active {
-  background: #f0fdf4;
-  border-color: #22c55e;
-  color: #16a34a;
+  background: rgba(59, 130, 246, 0.1);
+  border-color: #3b82f6;
+  color: #2563eb;
+  backdrop-filter: blur(4px);
 }
 
 /* Alert List */
@@ -75,8 +76,8 @@
   align-items: center;
   gap: 14px;
   padding: 16px 20px;
-  background: #fff;
-  border: 1px solid #e8e8e8;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   border-left: 4px solid transparent;
   transition: box-shadow 0.15s;
@@ -107,12 +108,12 @@
 }
 
 .alert-icon.critical {
-  background: #fef2f2;
+  background: var(--danger-soft);
   color: #ef4444;
 }
 
 .alert-icon.warning {
-  background: #fffbeb;
+  background: var(--warn-soft);
   color: #f59e0b;
 }
 
@@ -125,7 +126,7 @@
 .alert-title {
   font-size: 14px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--text1);
   margin: 0 0 3px;
   white-space: nowrap;
   overflow: hidden;
@@ -134,12 +135,12 @@
 
 .alert-meta {
   font-size: 12px;
-  color: #888;
+  color: var(--text3);
 }
 
 .alert-meta .sep {
   margin: 0 4px;
-  color: #ccc;
+  color: var(--text4);
 }
 
 /* Right side */
@@ -152,7 +153,7 @@
 
 .alert-time {
   font-size: 12px;
-  color: #999;
+  color: var(--text3);
   white-space: nowrap;
 }
 
@@ -180,9 +181,9 @@
 .btn-snooze {
   font-size: 12px;
   font-weight: 600;
-  color: #555;
+  color: var(--text2);
   background: none;
-  border: 1.5px solid #e0e0e0;
+  border: 1.5px solid var(--border);
   border-radius: 6px;
   padding: 6px 12px;
   cursor: pointer;
@@ -190,27 +191,27 @@
 }
 
 .btn-snooze:hover {
-  border-color: #aaa;
-  background: #f5f5f5;
+  border-color: var(--text3);
+  background: var(--surface2);
 }
 
 /* Empty state */
 .alert-empty {
   text-align: center;
   padding: 60px 20px;
-  color: #999;
+  color: var(--text3);
 }
 
 .alert-empty-icon {
   font-size: 48px;
-  color: #ccc;
+  color: var(--text4);
   margin-bottom: 12px;
 }
 
 .alert-empty h2 {
   font-size: 20px;
   font-weight: 700;
-  color: #666;
+  color: var(--text2);
   margin: 0 0 6px;
 }
 

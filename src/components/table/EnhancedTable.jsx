@@ -49,7 +49,11 @@ export default function EnhancedTable({
                   <Chip
                     label="N/A"
                     size="small"
-                    sx={{ fontWeight: 600, bgcolor: "#f5f5f5", color: "#999" }}
+                    sx={{
+                      fontWeight: 600,
+                      bgcolor: "var(--surface2)",
+                      color: "var(--text3)",
+                    }}
                   />
                 );
               }
@@ -63,16 +67,21 @@ export default function EnhancedTable({
                     fontWeight: 700,
                     fontSize: "11.5px",
                     bgcolor: isCritical
-                      ? "#ffebee"
+                      ? "var(--danger-soft)"
                       : isWarning
-                        ? "#fff3e0"
-                        : "#e8f5e9",
+                        ? "var(--warn-soft)"
+                        : "var(--success-soft)",
                     color: isCritical
-                      ? "#c62828"
+                      ? "var(--danger)"
                       : isWarning
-                        ? "#e65100"
-                        : "#2e7d32",
-                    border: `1px solid ${isCritical ? "#ef9a9a" : isWarning ? "#ffcc80" : "#a5d6a7"}`,
+                        ? "var(--warn)"
+                        : "var(--success)",
+                    border: `1px solid`,
+                    borderColor: isCritical
+                      ? "var(--danger)"
+                      : isWarning
+                        ? "var(--warn)"
+                        : "var(--success)",
                   }}
                 />
               );
@@ -93,9 +102,12 @@ export default function EnhancedTable({
                   size="small"
                   sx={{
                     fontWeight: 700,
-                    bgcolor: isOverdue ? "#ffebee" : "#fff3e0",
-                    color: isOverdue ? "#ba0606" : "#e65100",
-                    border: `1px solid ${isOverdue ? "#ef9a9a" : "#ffcc80"}`,
+                    bgcolor: isOverdue
+                      ? "var(--danger-soft)"
+                      : "var(--warn-soft)",
+                    color: isOverdue ? "var(--danger)" : "var(--warn)",
+                    border: `1px solid`,
+                    borderColor: isOverdue ? "var(--danger)" : "var(--warn)",
                   }}
                 />
               );
@@ -106,7 +118,7 @@ export default function EnhancedTable({
           field: col.id,
           headerName: col.label,
           flex: 1,
-          minWidth: 130,
+          minWidth: 110,
         };
       }),
     [headCells, statusColumn],
@@ -128,9 +140,10 @@ export default function EnhancedTable({
           width: "100%",
           mb: 2,
           borderRadius: "5px",
-          border: "1px solid #e8ecf1",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+          border: "1px solid var(--border)",
+          boxShadow: "var(--shadow)",
           overflow: "hidden",
+          bgcolor: "var(--surface)",
         }}
       >
         <Box
@@ -138,15 +151,15 @@ export default function EnhancedTable({
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            px: 2.5,
-            py: 2,
+            px: 2,
+            py: 1.5,
           }}
         >
           <Typography
             sx={{
               fontWeight: 800,
-              fontSize: "17px",
-              color: "#1a1a2e",
+              fontSize: "15px",
+              color: "var(--text1)",
               letterSpacing: "-0.3px",
             }}
             variant="h6"
@@ -180,20 +193,26 @@ export default function EnhancedTable({
             open={menuOpen}
             onClose={() => setAnchorEl(null)}
             PaperProps={{
-              sx: { borderRadius: "10px", minWidth: 140, mt: 0.5 },
+              sx: {
+                borderRadius: "10px",
+                minWidth: 140,
+                mt: 0.5,
+                bgcolor: "var(--surface)",
+                color: "var(--text1)",
+              },
             }}
           >
             <MenuItem
               onClick={() => handleExport("csv")}
               sx={{ fontSize: 13, fontWeight: 600 }}
             >
-              📄 Export as CSV
+              Export as CSV
             </MenuItem>
             <MenuItem
               onClick={() => handleExport("xlsx")}
               sx={{ fontSize: 13, fontWeight: 600 }}
             >
-              📊 Export as XLSX
+              Export as XLSX
             </MenuItem>
           </Menu>
         </Box>
@@ -201,6 +220,9 @@ export default function EnhancedTable({
           rows={rowsWithId}
           columns={columns}
           getRowId={(row) => row._gridId}
+          density="compact"
+          rowHeight={40}
+          columnHeaderHeight={42}
           initialState={{
             pagination: { paginationModel: { page: 0, pageSize: 10 } },
           }}
@@ -210,49 +232,100 @@ export default function EnhancedTable({
           getRowClassName={getRowClassName}
           sx={{
             border: 0,
+            bgcolor: "var(--surface)",
+            color: "var(--text1)",
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: "13px",
+            "& .MuiDataGrid-main": {
+              bgcolor: "var(--surface)",
+            },
+            "& .MuiDataGrid-virtualScroller": {
+              bgcolor: "var(--surface)",
+            },
             "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: "#f8f9fc",
-              borderBottom: "1.5px solid #e8ecf1",
+              backgroundColor: "var(--surface2)",
+              borderBottom: "1.5px solid var(--border)",
+            },
+            "& .MuiDataGrid-columnHeader": {
+              backgroundColor: "var(--surface2)",
+              color: "var(--text2)",
+              "&:focus, &:focus-within": {
+                outline: "none",
+              },
             },
             "& .MuiDataGrid-columnHeaderTitle": {
               fontWeight: 700,
-              fontSize: "12px",
-              color: "#555",
+              fontSize: "11px",
+              color: "var(--text2)",
               textTransform: "uppercase",
               letterSpacing: "0.5px",
             },
             "& .MuiDataGrid-cell": {
-              borderBottom: "1px solid #f0f2f5",
-              color: "#333",
-              fontSize: "13px",
+              borderBottom: "1px solid var(--border)",
+              color: "var(--text2)",
+              fontSize: "12px",
               display: "flex",
               alignItems: "center",
+              py: 0,
+              bgcolor: "transparent",
             },
             "& .MuiDataGrid-row": {
+              bgcolor: "var(--surface)",
               transition: "background 0.15s",
               "&:hover": {
-                backgroundColor: "#f6f8ff",
+                backgroundColor: "var(--surface2) !important",
               },
             },
             "& .MuiDataGrid-footerContainer": {
-              borderTop: "1.5px solid #e8ecf1",
-              backgroundColor: "#fafbfd",
+              borderTop: "1.5px solid var(--border)",
+              backgroundColor: "var(--surface2)",
+              color: "var(--text2)",
             },
             "& .MuiCheckbox-root": {
-              color: "#c0c8d8",
+              color: "var(--text4)",
+              transition: "color 0.2s ease",
+              "&:hover": {
+                backgroundColor: "var(--accent-soft)",
+              },
               "&.Mui-checked": {
                 color: "var(--accent)",
               },
+              "&.MuiCheckbox-indeterminate": {
+                color: "var(--accent)",
+              },
             },
-            "& .row-critical": {
-              backgroundColor: "#f88c8c",
-              "&:hover": { backgroundColor: "#ffebeb !important" },
+            "& .MuiTablePagination-root": {
+              color: "var(--text2)",
             },
-            "& .row-warning": {
-              backgroundColor: "#f5eacb",
-              "&:hover": { backgroundColor: "#fff5e0 !important" },
+            "& .MuiTablePagination-selectIcon": {
+              color: "var(--text3)",
+            },
+            "& .MuiIconButton-root": {
+              color: "var(--text3)",
+            },
+            "& .MuiDataGrid-columnSeparator": {
+              color: "var(--border)",
+            },
+            "& .MuiDataGrid-menuIcon button": {
+              color: "var(--text3)",
+            },
+            "& .MuiDataGrid-sortIcon": {
+              color: "var(--text3)",
+            },
+            "& .MuiDataGrid-overlay": {
+              bgcolor: "var(--surface)",
+              color: "var(--text2)",
+            },
+            "& .MuiDataGrid-filler": {
+              bgcolor: "var(--surface)",
+            },
+            "& .MuiDataGrid-row.row-critical": {
+              backgroundColor: "var(--danger-soft)",
+              "&:hover": { backgroundColor: "var(--danger-soft) !important" },
+            },
+            "& .MuiDataGrid-row.row-warning": {
+              backgroundColor: "var(--warn-soft)",
+              "&:hover": { backgroundColor: "var(--warn-soft) !important" },
             },
           }}
         />

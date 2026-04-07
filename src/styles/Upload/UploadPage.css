@@ -1,7 +1,7 @@
 /* Basic uploaded file info styling */
 .uploaded-file-info-basic {
-  background: #f6faff;
-  border: 1.5px solid #3b6fe8;
+  background: var(--accent-soft);
+  border: 1.5px solid var(--accent);
   border-radius: 12px;
   padding: 32px 18px 24px 18px;
   text-align: center;
@@ -13,7 +13,7 @@
 .uploaded-file-message-basic {
   font-size: 18px;
   font-weight: 700;
-  color: #2563eb;
+  color: var(--accent);
   margin-bottom: 16px;
   display: flex;
   align-items: center;
@@ -29,7 +29,7 @@
 .uploaded-file-name-basic {
   font-size: 20px;
   font-weight: 600;
-  color: #222;
+  color: var(--text1);
   /* background: #fff;
   border: 1px solid #e0e7ef; */
   border-radius: 6px;
@@ -37,9 +37,9 @@
   box-shadow: 0 1px 4px rgba(59, 111, 232, 0.04);
 }
 .cancel-upload-btn-basic {
-  background: #fff;
-  border: 1.5px solid #e0e7ef;
-  color: #888;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  color: var(--text3);
   border-radius: 50%;
   width: 28px;
   height: 28px;
@@ -55,15 +55,15 @@
     border-color 0.15s;
 }
 .cancel-upload-btn-basic:hover {
-  background: #f3f6fd;
-  color: #2563eb;
-  border-color: #2563eb;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent);
 }
 .cancel-upload-btn {
   position: absolute;
   top: 18px;
   right: 18px;
-  background: #fff;
+  background: var(--surface);
   border: 1.5px solid var(--border2);
   color: var(--text2);
   border-radius: 50%;
@@ -88,7 +88,7 @@
 }
 /* Uploaded file info styling */
 .uploaded-file-info {
-  background: linear-gradient(135deg, #eef3ff 0%, #f5f7fa 60%, #e6faf4 100%);
+  background: var(--surface2);
   border: 2px solid var(--accent);
   border-radius: 20px;
   padding: 56px 40px;
@@ -123,16 +123,6 @@
   margin-bottom: 8px;
   display: inline-block;
 }
-:root {
-  --surface: #ffffff;
-  --text1: #111;
-  --text2: #666;
-  --text3: #999;
-  --accent: #3b6fe8;
-  --accent-soft: rgba(59, 111, 232, 0.1);
-  --border2: #ddd;
-  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
 
 .ph {
   margin-bottom: 22px;
@@ -155,7 +145,7 @@
 }
 
 .upload-hero {
-  background: linear-gradient(135deg, #eef3ff 0%, #f5f7fa 60%, #e6faf4 100%);
+  background: var(--surface2);
   border: 2px dashed var(--border2);
   border-radius: 20px;
   padding: 56px 40px;
