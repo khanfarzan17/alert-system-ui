@@ -9,6 +9,7 @@ import AlertPage from "../pages/Alerts/AlertPage";
 import Settings from "../pages/settings/settings";
 import NotFound from "../pages/NotFound/NotFound";
 import MainLayout from "../layout/MainLayout";
+import AssetPage from "../pages/Assets/AssetPage";
 
 const AppRoutes = () => {
   return (
@@ -16,9 +17,10 @@ const AppRoutes = () => {
       <Route path="/" element={<LoginPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route element={<MainLayout />}>
-        <Route path="/upload" element={<UploadPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/upload" element={<UploadPage />} />
         <Route path="/alerts" element={<AlertPage />} />
+        <Route path="/assets" element={<AssetPage />} />
         <Route path="/settings" element={<Settings />} />
       </Route>
       <Route path="*" element={<NotFound />} />

@@ -1,17 +1,6 @@
-:root {
-  --surface: #ffffff;
-  --text1: #111;
-  --text2: #666;
-  --text3: #999;
-  --accent: #3B6FE8;
-  --accent-soft: rgba(59,111,232,0.1);
-  --border2: #ddd;
-  --shadow-lg: 0 10px 30px rgba(0,0,0,0.1);
-}
-
 /* Screen */
 #screen-login {
-  background: linear-gradient(135deg,#EEF3FF 0%,#F5F7FA 50%,#E6FAF4 100%);
+  background: var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,13 +31,13 @@
   width: 42px;
   height: 42px;
   border-radius: 11px;
-  background: linear-gradient(135deg,#3B6FE8,#0EA578);
+  background: linear-gradient(135deg, #3b6fe8, #0ea578);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-size: 18px;
-  box-shadow: 0 4px 12px rgba(59,111,232,.35);
+  box-shadow: 0 4px 12px rgba(59, 111, 232, 0.35);
 }
 
 .login-brand {
@@ -101,7 +90,7 @@
 
 .form-input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(59,111,232,.12);
+  box-shadow: 0 0 0 3px rgba(59, 111, 232, 0.12);
 }
 
 /* Button */
@@ -109,7 +98,7 @@
   width: 100%;
   padding: 13px;
   border-radius: 10px;
-  background: linear-gradient(135deg,#3B6FE8,#2557D6);
+  background: linear-gradient(135deg, #3b6fe8, #2557d6);
   border: none;
   color: white;
   font-size: 14px;
@@ -121,7 +110,7 @@
 
 .login-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(59,111,232,.4);
+  box-shadow: 0 6px 18px rgba(59, 111, 232, 0.4);
 }
 
 /* Error */

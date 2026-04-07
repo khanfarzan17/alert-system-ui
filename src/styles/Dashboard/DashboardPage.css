@@ -1,0 +1,501 @@
+﻿/* -- Dashboard Page -- */
+.dashboard-page {
+  max-width: 1100px;
+}
+
+/* Header */
+.dash-header h1 {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0 0 4px;
+  color: var(--text1, #1a1a1a);
+}
+
+.dash-sub {
+  font-size: 13px;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dash-sub .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  display: inline-block;
+}
+
+.dash-sub .sep {
+  color: var(--text4);
+}
+
+/* -- Stat Cards -- */
+.dash-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 22px 0 28px;
+}
+
+.dash-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 22px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+
+.dash-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.dash-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3.5px;
+}
+
+.dash-card.blue::before {
+  background: #3b82f6;
+}
+.dash-card.orange::before {
+  background: #f97316;
+}
+.dash-card.red::before {
+  background: #ef4444;
+}
+.dash-card.green::before {
+  background: #22c55e;
+}
+
+.dash-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.dash-card-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text3);
+}
+
+.dash-card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.dash-card-icon.blue {
+  background: var(--accent-soft);
+  color: #3b82f6;
+}
+.dash-card-icon.orange {
+  background: var(--warn-soft);
+  color: #f97316;
+}
+.dash-card-icon.red {
+  background: var(--danger-soft);
+  color: #ef4444;
+}
+.dash-card-icon.green {
+  background: var(--success-soft);
+  color: #22c55e;
+}
+
+.dash-card-value {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.dash-card-value.blue {
+  color: #3b82f6;
+}
+.dash-card-value.orange {
+  color: #f97316;
+}
+.dash-card-value.red {
+  color: #ef4444;
+}
+.dash-card-value.green {
+  color: #22c55e;
+}
+
+.dash-card-footer {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 6px;
+}
+
+.dash-card-footer span {
+  font-weight: 600;
+}
+.dash-card-footer span.blue {
+  color: #3b82f6;
+}
+.dash-card-footer span.green {
+  color: #22c55e;
+}
+
+/* -- Main Grid -- */
+.dash-body {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+}
+
+/* -- Monitor Table -- */
+.dash-monitor {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 24px;
+}
+
+.dash-monitor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.dash-monitor-head h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text1);
+}
+
+.btn-view-all {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--accent);
+  background: none;
+  border: 1.5px solid var(--accent);
+  border-radius: 20px;
+  padding: 5px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-view-all:hover {
+  background: var(--accent-soft);
+}
+
+.monitor-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.monitor-table th {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: left;
+  padding: 0 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.monitor-table td {
+  font-size: 13.5px;
+  padding: 14px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+}
+
+.monitor-table tr:last-child td {
+  border-bottom: none;
+}
+
+.asset-id {
+  font-weight: 700;
+  font-family: "SF Mono", "Consolas", monospace;
+  font-size: 12.5px;
+}
+.asset-id.critical {
+  color: #ef4444;
+}
+.asset-id.warning {
+  color: #f97316;
+}
+.asset-id.safe {
+  color: #22c55e;
+}
+
+.days-left-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.days-num {
+  font-weight: 700;
+  font-size: 13px;
+  min-width: 28px;
+}
+.days-num.critical {
+  color: #ef4444;
+}
+.days-num.warning {
+  color: #f97316;
+}
+.days-num.safe {
+  color: #22c55e;
+}
+
+.days-bar {
+  width: 80px;
+  height: 5px;
+  background: var(--surface2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.days-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.3s;
+}
+.days-bar-fill.critical {
+  background: #ef4444;
+}
+.days-bar-fill.warning {
+  background: #f97316;
+}
+.days-bar-fill.safe {
+  background: #22c55e;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.status-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.status-badge.critical {
+  color: #ef4444;
+  background: var(--danger-soft);
+}
+.status-badge.critical .dot {
+  background: #ef4444;
+}
+.status-badge.warning {
+  color: #f97316;
+  background: var(--warn-soft);
+}
+.status-badge.warning .dot {
+  background: #f97316;
+}
+.status-badge.safe {
+  color: #22c55e;
+  background: var(--success-soft);
+}
+.status-badge.safe .dot {
+  background: #22c55e;
+}
+
+/* -- Sidebar -- */
+.dash-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dash-cron {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 22px;
+}
+
+.dash-cron-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.dash-cron-head h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text1);
+}
+
+.badge-active {
+  font-size: 11px;
+  font-weight: 700;
+  color: #22c55e;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge-active .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.cron-card {
+  background: var(--success-soft);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.cron-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text1);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cron-card-title .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.cron-card-detail {
+  font-size: 11.5px;
+  color: var(--text2);
+  font-family: "SF Mono", "Consolas", monospace;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cron-next {
+  font-size: 12px;
+  font-weight: 700;
+  color: #16a34a;
+}
+
+/* Recent Activity */
+.dash-activity {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 22px;
+}
+
+.dash-activity-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.dash-activity-head h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text1);
+}
+
+.btn-logs {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+.btn-logs:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #22c55e;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.activity-text {
+  flex: 1;
+}
+.activity-text strong {
+  font-size: 13px;
+  color: var(--text1);
+  display: block;
+}
+.activity-text span {
+  font-size: 11.5px;
+  color: var(--text3);
+}
+
+/* Empty */
+.dash-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text3);
+}
+.dash-empty-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+.dash-empty h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text2);
+  margin: 0 0 6px;
+}
+.dash-empty p {
+  font-size: 14px;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .dash-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dash-body {
+    grid-template-columns: 1fr;
+  }
+}

@@ -11,9 +11,9 @@ const MainLayout = () => {
   return (
     <div>
       <Topbar />
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", marginTop: 56 }}>
         <Sidebar />
-        <main style={{ flex: 1, padding: 24 }}>
+        <main style={{ flex: 1, padding: 24, overflowX: "auto" }}>
           <Outlet />
         </main>
       </div>

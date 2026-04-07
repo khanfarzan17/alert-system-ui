@@ -1,59 +1,73 @@
-.sidebar{
-  width:210px;
-  flex-shrink:0;
-  background:var(--surface);
-  border-right:1px solid var(--border);
-  padding:16px 10px;
-  display:flex;
-  flex-direction:column;
+.sidebar {
+  width: 210px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 16px 10px;
+  display: flex;
+  flex-direction: column;
 }
 
-.sb-sect{margin-bottom:20px;}
-
-.sb-lbl{
-  font-size:9.5px;
-  font-weight:700;
-  color:var(--text3);
-  letter-spacing:1px;
-  text-transform:uppercase;
-  padding:0 10px;
-  margin-bottom:6px;
+.sb-sect {
+  margin-bottom: 20px;
 }
 
-.sb-item{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  padding:8px 10px;
-  border-radius:9px;
-  font-size:12.5px;
-  font-weight:600;
-  color:var(--text2);
-  cursor:pointer;
-  transition:all .15s;
-  margin-bottom:1px;
-  text-decoration:none;
+.sb-lbl {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--text3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 0 10px;
+  margin-bottom: 6px;
 }
 
-.sb-item:hover{
-  background:var(--surface2);
-  color:var(--text1);
+.sb-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 1px;
+  text-decoration: none;
 }
 
-.sb-item.active{
-  background:var(--accent-soft);
-  color:var(--accent);
+.sb-item:hover {
+  background: var(--surface2);
+  color: var(--text1);
 }
 
-.sb-badge{
-  margin-left:auto;
-  font-size:9.5px;
-  font-weight:700;
-  padding:2px 7px;
-  border-radius:20px;
+.sb-item.active {
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
-.sb-badge.r{background:#FEE2E2;color:#DC2626;}
-.sb-badge.o{background:#FEF3C7;color:#D97706;}
-.sb-badge.g{background:#D1FAE5;color:#059669;}
-.sb-badge.b{background:#DBEAFE;color:#2563EB;}
+.sb-badge {
+  margin-left: auto;
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+
+.sb-badge.r {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+.sb-badge.o {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+.sb-badge.g {
+  background: var(--success-soft);
+  color: var(--success);
+}
+.sb-badge.b {
+  background: var(--accent-soft);
+  color: var(--accent);
+}

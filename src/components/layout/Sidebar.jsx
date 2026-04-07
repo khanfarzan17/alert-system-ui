@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "../../styles/sidebar/sidebar.css";
 
 const Sidebar = () => {
   const location = useLocation();
+  const { tableData } = useSelector((state) => state.upload);
+
+  const alertCount = useMemo(() => {
+    if (!tableData || tableData.length === 0) return 0;
+    return tableData.filter(
+      (row) => row["Days Remaining"] !== "N/A" && row["Days Remaining"] <= 50,
+    ).length;
+  }, [tableData]);
+
+  const assetCount = useMemo(() => {
+    if (!tableData || tableData.length === 0) return 0;
+    return tableData.length;
+  }, [tableData]);
 
   const menuItems = [
     {
@@ -16,7 +30,18 @@ const Sidebar = () => {
     {
       section: "MANAGEMENT",
       items: [
-        { name: "Alerts", path: "/alerts", badge: "5", badgeType: "r" },
+        {
+          name: "Alerts",
+          path: "/alerts",
+          badge: alertCount > 0 ? String(alertCount) : null,
+          badgeType: "r",
+        },
+        {
+          name: "Assets",
+          path: "/assets",
+          badge: assetCount > 0 ? String(assetCount) : null,
+          badgeType: "g",
+        },
         { name: "Settings", path: "/settings", badge: null },
       ],
     },
@@ -39,7 +64,7 @@ const Sidebar = () => {
               }`}
             >
               {/* Icon (simple placeholder) */}
-              <span>📁</span>
+              {/* <span>📁</span> */}
 
               {item.name}
 
