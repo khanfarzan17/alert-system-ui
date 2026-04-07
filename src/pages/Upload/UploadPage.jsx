@@ -10,6 +10,7 @@ import {
   setUploadData,
   addUploadHistory,
 } from "../../redux/slice/uploadSlice.js";
+import { sendAlerts } from "../../utils/sendAlerts.js";
 import { Button, Box, Snackbar, Alert, AlertTitle, Slide } from "@mui/material";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
@@ -130,43 +131,9 @@ export default function UploadPage() {
     return dayjs(dueDate).diff(dayjs(), "day");
   };
 
-  const handleSendAlerts = () => {
-    const alertRows = tableData.filter((row) => row["Days Remaining"] <= 50);
-
-    if (alertRows.length === 0) {
-      showSnackbar(
-        "warning",
-        "No Alerts Needed",
-        "All assets are within safe limits.",
-      );
-      return;
-    }
-
-    // Find column keys dynamically (case/space insensitive)
-    const keys = Object.keys(tableData[0]);
-    const ownerKey = keys.find((k) =>
-      k.toLowerCase().replace(/\s/g, "").includes("owner"),
-    );
-    const riskEngineerKey = keys.find((k) =>
-      k.toLowerCase().replace(/\s/g, "").includes("riskengineer"),
-    );
-
-    alertRows.forEach((item) => {
-      const daysLeft = item["Days Remaining"];
-      const assetName = item[tableColumns[0]?.id] || "Unknown";
-      const owner = ownerKey ? item[ownerKey] : "N/A";
-      const riskEngineer = riskEngineerKey ? item[riskEngineerKey] : "N/A";
-
-      console.log(
-        `⚠️ Alert sent for: ${assetName} | Days Remaining: ${daysLeft} | Owner: ${owner} | Risk Engineer: ${riskEngineer}`,
-      );
-    });
-
-    showSnackbar(
-      "success",
-      "Alerts Sent!",
-      `${alertRows.length} asset(s) have been notified successfully.`,
-    );
+  const handleSendAlerts = async () => {
+    const result = await sendAlerts(tableData, tableColumns);
+    showSnackbar(result.status, result.title, result.message);
   };
   return (
     <div>
