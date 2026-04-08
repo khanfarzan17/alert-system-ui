@@ -3,6 +3,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import "../../styles/Upload/UploadPage.css";
 import { parseFile } from "../../utils/fileParser";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import UploadList from "./UploadList";
 import UploadRules from "./UploadRules";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +14,8 @@ import {
 import { sendAlerts } from "../../utils/sendAlerts.js";
 import { Button, Box, Snackbar, Alert, AlertTitle, Slide } from "@mui/material";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+
+dayjs.extend(customParseFormat);
 
 export default function UploadPage() {
   const fileInputRef = useRef();
@@ -128,7 +131,27 @@ export default function UploadPage() {
   };
 
   const getDaysRemaining = (dueDate) => {
-    return dayjs(dueDate).diff(dayjs(), "day");
+    if (!dueDate) return "N/A";
+    if (dueDate instanceof Date) return dayjs(dueDate).diff(dayjs(), "day");
+    const str = String(dueDate).trim();
+    if (!str) return "N/A";
+    const formats = [
+      "YYYY-MM-DD",
+      "MM/DD/YYYY",
+      "M/D/YYYY",
+      "MM/DD/YY",
+      "M/D/YY",
+      "DD/MM/YYYY",
+      "D/M/YYYY",
+      "DD-MM-YYYY",
+      "YYYY/MM/DD",
+    ];
+    for (const fmt of formats) {
+      const d = dayjs(str, fmt, true);
+      if (d.isValid()) return d.diff(dayjs(), "day");
+    }
+    const fallback = dayjs(str);
+    return fallback.isValid() ? fallback.diff(dayjs(), "day") : "N/A";
   };
 
   const handleSendAlerts = async () => {

@@ -1,6 +1,8 @@
 /* ── Alert Page ── */
 .alert-page {
-  max-width: 960px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Header */
@@ -218,4 +220,98 @@
 .alert-empty p {
   font-size: 14px;
   margin: 0;
+}
+
+/* ── Large: 1300px–1599px ── */
+@media (min-width: 1300px) {
+  .alert-card {
+    padding: 18px 24px;
+    gap: 18px;
+  }
+  .alert-title {
+    font-size: 15px;
+  }
+  .alert-icon {
+    width: 46px;
+    height: 46px;
+  }
+}
+
+/* ── Extra large: 1600px+ ── */
+@media (min-width: 1600px) {
+  .alert-header h1 {
+    font-size: 30px;
+  }
+  .alert-filters {
+    margin: 24px 0 28px;
+    gap: 10px;
+  }
+  .alert-filter-btn {
+    font-size: 14px;
+    padding: 7px 20px;
+  }
+  .alert-list {
+    gap: 14px;
+  }
+  .alert-card {
+    padding: 20px 28px;
+    gap: 20px;
+    border-radius: 14px;
+  }
+  .alert-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+  .alert-title {
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+  .alert-meta {
+    font-size: 13px;
+  }
+  .alert-time {
+    font-size: 13px;
+  }
+}
+
+/* ── Ultra wide: 1920px+ ── */
+@media (min-width: 1920px) {
+  .alert-header h1 {
+    font-size: 34px;
+  }
+  .alert-list {
+    gap: 16px;
+  }
+  .alert-card {
+    padding: 24px 32px;
+    gap: 24px;
+  }
+  .alert-icon {
+    width: 54px;
+    height: 54px;
+  }
+  .alert-title {
+    font-size: 16px;
+  }
+}
+
+/* ── Small: ≤640px ── */
+@media (max-width: 640px) {
+  .alert-card {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+  .alert-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .alert-filters {
+    gap: 6px;
+  }
+  .alert-filter-btn {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
 }

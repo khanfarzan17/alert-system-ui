@@ -6,6 +6,10 @@
   padding: 16px 10px;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
 }
 
 .sb-sect {

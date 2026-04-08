@@ -21,15 +21,9 @@ const Sidebar = () => {
 
   const menuItems = [
     {
-      section: "MAIN",
       items: [
         { name: "Upload", path: "/upload", badge: null },
         { name: "Dashboard", path: "/dashboard", badge: null },
-      ],
-    },
-    {
-      section: "MANAGEMENT",
-      items: [
         {
           name: "Alerts",
           path: "/alerts",
