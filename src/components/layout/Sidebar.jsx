@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "../../styles/sidebar/sidebar.css";
-
 const Sidebar = () => {
   const location = useLocation();
   const { tableData } = useSelector((state) => state.upload);

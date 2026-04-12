@@ -1,21 +1,31 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../components/context/Authcontext";
+import { loginRequest } from "../../Services/authService";
 import "../../styles/loginPage/loginPage.css";
+
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Dummy credentials
-    if (email === "admin@example.com" && password === "admin123") {
-      setError("");
+    setIsSubmitting(true);
 
+    try {
+      const response = await loginRequest(email, password);
+      console.log("Login API response:", response);
+      login(response, email);
+      setError("");
       navigate("/upload");
-    } else {
-      setError("Invalid email or password");
+    } catch (err) {
+      setError(err.message || "Login failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -43,7 +53,7 @@ const LoginPage = () => {
               className="form-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@example.com"
+              placeholder="you@example.com"
               required
             />
           </div>
@@ -60,8 +70,8 @@ const LoginPage = () => {
             />
           </div>
 
-          <button type="submit" className="login-btn">
-            Login
+          <button type="submit" className="login-btn" disabled={isSubmitting}>
+            {isSubmitting ? "Logging in..." : "Login"}
           </button>
 
           {error && <div className="error-text">{error}</div>}

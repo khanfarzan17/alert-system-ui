@@ -11,9 +11,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <ThemeProvider>
-          <AppRoutes />
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <AppRoutes />
+          </ThemeProvider>
+        </AuthProvider>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,

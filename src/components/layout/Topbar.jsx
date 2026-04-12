@@ -1,6 +1,7 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
+import { useAuth } from "../context/Authcontext";
 import "../../styles/topbar/topbar.css";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
@@ -9,7 +10,25 @@ import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 
 const Topbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { user, logout } = useAuth();
+
+  const displayName = user?.name || user?.email || "User";
+
+  console.log("user name", displayName);
+
+  const initials = displayName
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   const navItems = [
     { name: "Upload", path: "/upload" },
@@ -44,15 +63,6 @@ const Topbar = () => {
 
       {/* Right Section */}
       <div className="top-right">
-        {/* Theme Toggle */}
-        {/* <button
-          className="icon-btn"
-          onClick={toggleTheme}
-          title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
-        >
-          {theme === "light" ? "🌙" : "☀️"}
-        </button> */}
-
         <Tooltip
           title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
         >
@@ -68,11 +78,15 @@ const Topbar = () => {
           </IconButton>
         </Tooltip>
 
-        {/* Avatar */}
-        <div className="avatar">FK</div>
+        {/* Avatar with initials */}
+        <Tooltip title={displayName}>
+          <div className="avatar">{initials}</div>
+        </Tooltip>
 
         {/* Logout */}
-        <button className="logout-btn">Logout</button>
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
     </div>
   );

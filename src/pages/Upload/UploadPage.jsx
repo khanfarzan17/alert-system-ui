@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import "../../styles/Upload/UploadPage.css";
 import { parseFile } from "../../utils/fileParser";
@@ -10,8 +10,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setUploadData,
   addUploadHistory,
+  setUploadHistory,
 } from "../../redux/slice/uploadSlice.js";
-import { sendAlerts } from "../../utils/sendAlerts.js";
+import { sendAlerts } from "../../Services/alertService";
+import {
+  uploadAssetFile,
+  fetchUploadHistory,
+} from "../../Services/assetService";
+import { useAuth } from "../../components/context/Authcontext";
 import { Button, Box, Snackbar, Alert, AlertTitle, Slide } from "@mui/material";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
@@ -31,6 +37,14 @@ export default function UploadPage() {
     message: "",
   });
   const dispatch = useDispatch();
+  const { token } = useAuth();
+
+  // Load upload history from backend on mount
+  useEffect(() => {
+    fetchUploadHistory(token)
+      .then((history) => dispatch(setUploadHistory(history)))
+      .catch((err) => console.error("Failed to load upload history:", err));
+  }, [token, dispatch]);
 
   const showSnackbar = (severity, title, message) => {
     setSnackbar({ open: true, severity, title, message });
@@ -71,33 +85,46 @@ export default function UploadPage() {
         }));
 
         setTableData(enrichedData);
-        setTableColumns([
-          ...Object.keys(data[0]).map((key) => ({
-            id: key,
-            label: key,
-          })),
+
+        const columns = [
+          ...Object.keys(data[0]).map((key) => ({ id: key, label: key })),
           { id: "Days Remaining", label: "Days Remaining" },
-        ]);
+        ];
+        setTableColumns(columns);
 
-        // Add to upload history
+        // Dispatch to Redux for Alerts/Dashboard pages
         dispatch(
-          addUploadHistory({
-            name: file.name,
-            uploadedAt: dayjs().format("DD MMM YYYY, hh:mm A"),
-          }),
+          setUploadData({ tableData: enrichedData, tableColumns: columns }),
         );
 
-        // Dispatch upload data to Redux
-        // Store in Redux for Alerts page
-        dispatch(
-          setUploadData({
-            tableData: enrichedData,
-            tableColumns: [
-              ...Object.keys(data[0]).map((key) => ({ id: key, label: key })),
-              { id: "Days Remaining", label: "Days Remaining" },
-            ],
-          }),
-        );
+        // POST the parsed data to the backend as JSON
+        try {
+          await uploadAssetFile(enrichedData, columns, file.name, token);
+          showSnackbar(
+            "success",
+            "Upload Successful",
+            `${file.name} was uploaded to the server.`,
+          );
+
+          // Refresh history from backend
+          const history = await fetchUploadHistory(token);
+          dispatch(setUploadHistory(history));
+        } catch (uploadErr) {
+          // File was parsed locally; only the server POST failed
+          console.error("Server upload failed:", uploadErr);
+          // Fallback: add to local history so the UI doesn't stay empty
+          dispatch(
+            addUploadHistory({
+              name: file.name,
+              uploadedAt: dayjs().format("DD MMM YYYY, hh:mm A"),
+            }),
+          );
+          showSnackbar(
+            "warning",
+            "Upload Warning",
+            `File parsed locally, but server upload failed: ${uploadErr.message}`,
+          );
+        }
       }
     } catch (error) {
       console.error(error);
@@ -155,7 +182,7 @@ export default function UploadPage() {
   };
 
   const handleSendAlerts = async () => {
-    const result = await sendAlerts(tableData, tableColumns);
+    const result = await sendAlerts(tableData, tableColumns, token);
     showSnackbar(result.status, result.title, result.message);
   };
   return (

@@ -115,6 +115,21 @@
   color: white;
 }
 
+/* Username label next to avatar */
+.topbar-username {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #1e293b);
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .topbar-username {
+  color: #f1f5f9;
+}
+
 /* Logout */
 .logout-btn {
   font-size: 12px;

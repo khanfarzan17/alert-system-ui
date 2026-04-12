@@ -15,6 +15,9 @@ const uploadSlice = createSlice({
     addUploadHistory(state, action) {
       state.uploadHistory = [action.payload, ...state.uploadHistory];
     },
+    setUploadHistory(state, action) {
+      state.uploadHistory = action.payload;
+    },
     clearUploadData(state) {
       state.tableData = [];
       state.tableColumns = [];
@@ -22,5 +25,5 @@ const uploadSlice = createSlice({
   },
 });
 
-export const { setUploadData, addUploadHistory, clearUploadData } = uploadSlice.actions;
+export const { setUploadData, addUploadHistory, setUploadHistory, clearUploadData } = uploadSlice.actions;
 export default uploadSlice.reducer;
