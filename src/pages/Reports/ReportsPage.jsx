@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import {
   PieChart,
@@ -17,6 +17,8 @@ import {
 } from "recharts";
 import "../../styles/Reports/ReportsPage.css";
 import EmptyReportPage from "./EmptyReportPage";
+import { Loader } from "lucide-react";
+import SkeletonLoader from "../../components/common/skeletonLoader";
 
 const findKey = (keys, match) =>
   keys.find((k) => k.toLowerCase().replace(/\s/g, "").includes(match));
@@ -81,22 +83,66 @@ const CardHead = ({ title, sub, dotColor, badge }) => (
 );
 
 // ─── ReportsPage ───────────────────────────────────────────────────────────────
+
 const ReportsPage = () => {
-  const { tableData, tableColumns, uploadHistory } = useSelector(
-    (state) => state.upload,
-  );
+  const [data, setData] = useState([]);
+  const [columns, setColumns] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/assets")
+      .then((res) => res.json())
+      .then((res) => {
+        const finalData = Array.isArray(res) ? res : [];
+
+        setData(finalData);
+
+        // ✅ column mapping from backend keys
+        if (finalData.length > 0) {
+          const cols = Object.keys(finalData[0]).map((key) => ({
+            id: key,
+          }));
+          setColumns(cols);
+        }
+
+        setLoading(false); // ✅ VERY IMPORTANT
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  }, []);
+  // Define tableData before using it
+  const tableData = data;
+
+  const uploadHistory = useMemo(() => {
+    const map = {};
+
+    tableData.forEach((r) => {
+      const key = r.fileName || "Unknown File";
+
+      if (!map[key]) {
+        map[key] = {
+          fileName: r.fileName,
+          uploadedAt: r.uploadedAt,
+          rowCount: 0,
+        };
+      }
+
+      map[key].rowCount++;
+    });
+
+    return Object.values(map);
+  }, [tableData]);
 
   // Column key discovery
   const colKeys = useMemo(() => {
-    if (tableColumns.length === 0) return {};
-    const keys = tableColumns.map((c) => c.id);
     return {
-      owner: findKey(keys, "owner"),
-      riskEngineer: findKey(keys, "riskengineer") || findKey(keys, "risk"),
-      dueDate: findKey(keys, "duedate"),
+      owner: "owner",
+      riskEngineer: "riskEngineer",
+      dueDate: "dueDate",
     };
-  }, [tableColumns]);
-
+  }, []);
   // ── Summary stats ──────────────────────────────────────────────────────────
   const stats = useMemo(() => {
     let overdue = 0,
@@ -104,9 +150,8 @@ const ReportsPage = () => {
       warning = 0,
       safe = 0;
     tableData.forEach((r) => {
-      const d = r["Days Remaining"];
-      if (d === "N/A") return;
-      const n = Number(d);
+      const n = Number(r.daysRemaining);
+      if (isNaN(n)) return;
       if (n <= 0) overdue++;
       else if (n <= 10) critical++;
       else if (n <= 50) warning++;
@@ -141,9 +186,8 @@ const ReportsPage = () => {
       { name: ">90", min: 91, max: Infinity, color: "#22c55e", count: 0 },
     ];
     tableData.forEach((r) => {
-      const d = r["Days Remaining"];
-      if (d === "N/A") return;
-      const n = Number(d);
+      const n = Number(r.daysRemaining);
+      if (isNaN(n)) return;
       for (const b of buckets) {
         if (n >= b.min && n <= b.max) {
           b.count++;
@@ -156,50 +200,36 @@ const ReportsPage = () => {
 
   // ── Chart 3: Assets by Owner (stacked bar) ────────────────────────────────
   const ownerData = useMemo(() => {
-    if (!colKeys.owner) return [];
     const map = {};
     tableData.forEach((r) => {
       const owner = r[colKeys.owner] || "Unknown";
       if (!map[owner])
         map[owner] = { owner, critical: 0, warning: 0, safe: 0, overdue: 0 };
-      const d = r["Days Remaining"];
-      if (d === "N/A") return;
-      const n = Number(d);
+      const n = Number(r.daysRemaining);
+      if (isNaN(n)) return;
       if (n <= 0) map[owner].overdue++;
       else if (n <= 10) map[owner].critical++;
       else if (n <= 50) map[owner].warning++;
       else map[owner].safe++;
     });
-    return Object.values(map)
-      .sort(
-        (a, b) =>
-          b.overdue +
-          b.critical +
-          b.warning -
-          (a.overdue + a.critical + a.warning),
-      )
-      .slice(0, 10);
+    return Object.values(map).slice(0, 10);
   }, [tableData, colKeys]);
 
   // ── Chart 4: Assets by Risk Engineer ─────────────────────────────────────
   const riskEngineerData = useMemo(() => {
-    if (!colKeys.riskEngineer) return [];
     const map = {};
     tableData.forEach((r) => {
       const re = r[colKeys.riskEngineer] || "Unknown";
       if (!map[re]) map[re] = { name: re, total: 0, alertable: 0 };
       map[re].total++;
-      const d = r["Days Remaining"];
-      if (d !== "N/A" && Number(d) <= 50) map[re].alertable++;
+      const n = Number(r.daysRemaining);
+      if (!isNaN(n) && n <= 50) map[re].alertable++;
     });
-    return Object.values(map)
-      .sort((a, b) => b.total - a.total)
-      .slice(0, 8);
+    return Object.values(map).slice(0, 8);
   }, [tableData, colKeys]);
 
   // ── Chart 5: Monthly Due Assets (Area) ────────────────────────────────────
   const monthlyDueData = useMemo(() => {
-    if (!colKeys.dueDate) return [];
     const map = {};
     tableData.forEach((r) => {
       const raw = r[colKeys.dueDate];
@@ -210,9 +240,7 @@ const ReportsPage = () => {
       if (!map[key]) map[key] = { month: key, assets: 0 };
       map[key].assets++;
     });
-    return Object.values(map)
-      .sort((a, b) => a.month.localeCompare(b.month))
-      .slice(0, 12);
+    return Object.values(map);
   }, [tableData, colKeys]);
 
   // ── Alert Eligibility ─────────────────────────────────────────────────────
@@ -226,18 +254,15 @@ const ReportsPage = () => {
   }, [stats]);
 
   // ── Empty state ────────────────────────────────────────────────────────────
-  if (tableData.length === 0) {
+  if (loading) {
     return (
-      <div className="rp-page">
-        <div className="rp-header">
-          <h1>Reports</h1>
-          <p className="rp-header-sub">
-            Analytics and insights from your asset data
-          </p>
-        </div>
-        <EmptyReportPage />
+      <div className="rp-page rp-loading">
+        <SkeletonLoader />
       </div>
     );
+  }
+  if (data.length === 0) {
+    return <SkeletonLoader />;
   }
 
   return (
@@ -368,15 +393,27 @@ const ReportsPage = () => {
           <ResponsiveContainer width="100%" height={260}>
             <BarChart
               data={histogramData}
-              margin={{ top: 5, right: 16, left: 0, bottom: 5 }}
+              margin={{ top: 10, right: 16, left: 0, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+
               <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+
               <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
+
               <Tooltip content={<ChartTooltip />} />
-              <Bar dataKey="count" name="Assets" radius={[6, 6, 0, 0]}>
+
+              <Legend wrapperStyle={{ fontSize: 12 }} />
+
+              {/* 🔥 Better Visual Bars */}
+              <Bar dataKey="count" name="Assets Count" radius={[8, 8, 0, 0]}>
                 {histogramData.map((entry, i) => (
-                  <Cell key={i} fill={entry.color} />
+                  <Cell
+                    key={i}
+                    fill={entry.color}
+                    stroke="#fff"
+                    strokeWidth={1}
+                  />
                 ))}
               </Bar>
             </BarChart>

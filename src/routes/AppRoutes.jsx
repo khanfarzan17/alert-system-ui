@@ -13,6 +13,7 @@ import MainLayout from "../layout/MainLayout";
 import AssetPage from "../pages/Assets/AssetPage";
 import ReportsPage from "../pages/Reports/ReportsPage";
 import LoaderTestPage from "../pages/LoaderTestPage";
+import UserPage from "../pages/users/user";
 
 const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
@@ -22,13 +23,14 @@ const AppRoutes = () => {
       <Route
         path="/"
         element={
-          isAuthenticated ? <Navigate to="/upload" replace /> : <LoginPage />
+          isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />
         }
       />
+
       <Route
         path="/login"
         element={
-          isAuthenticated ? <Navigate to="/upload" replace /> : <LoginPage />
+          isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />
         }
       />
       <Route element={<MainLayout />}>
@@ -70,6 +72,12 @@ const AppRoutes = () => {
           path="/reports"
           element={
             isAuthenticated ? <ReportsPage /> : <Navigate to="/login" replace />
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            isAuthenticated ? <UserPage /> : <Navigate to="/login" replace />
           }
         />
         <Route path="/loader-test" element={<LoaderTestPage />} />

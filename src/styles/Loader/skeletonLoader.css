@@ -1,118 +1,187 @@
+/* 🔥 THEME VARIABLES */
+
+/* Light Theme */
+:root {
+  --bg-main: #f6f8fb;
+  --bg-secondary: #ffffff;
+  --border-color: #e2e8f0;
+
+  --skeleton-base: #e5e7eb;
+  --skeleton-highlight: #f3f4f6;
+
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --bg-main: #0b0f14;
+  --bg-secondary: #121821;
+  --border-color: #1f2630;
+
+  --skeleton-base: #1e293b;
+  --skeleton-highlight: #2a3647;
+
+  --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* 🔥 Base Layout */
 .skeleton-app-bg {
-  background: #10141a;
+  background: var(--bg-main);
   min-height: 100vh;
-  width: 100vw;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  animation: fadeIn 0.4s ease-in;
+}
+
+/* 🔥 Center Container */
+.skeleton-container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 32px 24px;
   display: flex;
   flex-direction: column;
+  gap: 32px;
 }
-.skeleton-topbar {
-  height: 56px;
-  background: #181d25;
-  display: flex;
-  align-items: center;
-  padding: 0 32px;
-  border-bottom: 1px solid #23272f;
+
+/* 🔥 Fade animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.skeleton-logo {
-  width: 40px;
-  height: 40px;
-  background: #232e3e;
-  border-radius: 12px;
-  margin-right: 16px;
+
+/* 🔥 Shimmer Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -500px 0;
+  }
+  100% {
+    background-position: 500px 0;
+  }
 }
-.skeleton-brand {
-  width: 100px;
-  height: 24px;
-  background: #232e3e;
-  border-radius: 6px;
+
+/* 🔥 Common Skeleton Style */
+.skeleton-card-bar,
+.skeleton-card-dot,
+.skeleton-table-header-bar,
+.skeleton-table-cell {
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-base) 20%,
+    var(--skeleton-highlight) 50%,
+    var(--skeleton-base) 80%
+  );
+  background-size: 300% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
 }
-.skeleton-sidebar {
-  width: 220px;
-  background: #181d25;
-  height: calc(100vh - 56px);
-  padding: 24px 0;
-  border-right: 1px solid #23272f;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.skeleton-sidebar-item {
-  width: 160px;
-  height: 32px;
-  background: #232e3e;
-  border-radius: 8px;
-  margin: 8px 24px;
-}
-.skeleton-main {
-  flex: 1;
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
+
+/* 🧾 Cards Layout */
 .skeleton-cards {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 24px;
 }
+
+/* 🧾 Card */
 .skeleton-card {
-  flex: 1;
-  height: 120px;
-  background: #181d25;
-  border-radius: 16px;
+  height: 130px;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s ease;
+  position: relative;
 }
+
+.skeleton-card:hover {
+  transform: translateY(-3px);
+}
+
+/* ✨ Glow effect */
+.skeleton-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.skeleton-card:hover::before {
+  opacity: 1;
+}
+
 .skeleton-card-bar {
-  width: 80%;
   height: 18px;
-  background: #232e3e;
   border-radius: 6px;
 }
+
 .skeleton-card-dot {
-  width: 32px;
-  height: 24px;
-  background: #232e3e;
+  width: 36px;
+  height: 26px;
   border-radius: 8px;
 }
+
+/* 📋 Table */
 .skeleton-table {
-  background: #181d25;
-  border-radius: 16px;
+  width: 100%;
+  border-radius: 20px;
   padding: 24px;
-  min-height: 200px;
+  min-height: 220px;
+
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+  overflow-x: auto;
 }
+
 .skeleton-table-header {
   display: flex;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
+
 .skeleton-table-header-bar {
-  width: 120px;
   height: 16px;
-  background: #232e3e;
   border-radius: 6px;
 }
+
 .skeleton-table-row {
   display: flex;
   gap: 16px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
+
 .skeleton-table-cell {
-  width: 100px;
   height: 14px;
-  background: #232e3e;
   border-radius: 6px;
 }
-@media (max-width: 900px) {
-  .skeleton-cards {
-    flex-direction: column;
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .skeleton-container {
+    padding: 20px 16px;
   }
-  .skeleton-sidebar {
-    width: 60px;
-  }
-  .skeleton-sidebar-item {
-    width: 40px;
+
+  .skeleton-card {
+    height: 110px;
   }
 }

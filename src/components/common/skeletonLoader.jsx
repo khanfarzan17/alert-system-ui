@@ -1,47 +1,63 @@
 import "../../styles/Loader/skeletonLoader.css";
 
-const SkeletonLoader = () => {
+/* 🔥 Base Skeleton */
+const Skeleton = ({ className, style }) => {
+  return <div className={className} style={style} />;
+};
+
+/* 🔥 Random width */
+const getRandomWidth = (min = 60, max = 100) =>
+  `${Math.floor(Math.random() * (max - min) + min)}%`;
+
+/* 🔥 Cards */
+const CardsSkeleton = ({ count = 4 }) => (
+  <div className="skeleton-cards">
+    {Array.from({ length: count }).map((_, i) => (
+      <div className="skeleton-card" key={i}>
+        <Skeleton
+          className="skeleton-card-bar"
+          style={{ width: getRandomWidth(50, 90) }}
+        />
+        <Skeleton className="skeleton-card-dot" />
+      </div>
+    ))}
+  </div>
+);
+
+/* 🔥 Table */
+const TableSkeleton = ({ rows = 5, cols = 6 }) => (
+  <div className="skeleton-table">
+    <div className="skeleton-table-header">
+      {Array.from({ length: cols }).map((_, i) => (
+        <Skeleton
+          className="skeleton-table-header-bar"
+          key={i}
+          style={{ width: getRandomWidth(60, 100) }}
+        />
+      ))}
+    </div>
+
+    {Array.from({ length: rows }).map((_, i) => (
+      <div className="skeleton-table-row" key={i}>
+        {Array.from({ length: cols }).map((_, j) => (
+          <Skeleton
+            className="skeleton-table-cell"
+            key={j}
+            style={{ width: getRandomWidth(40, 100) }}
+          />
+        ))}
+      </div>
+    ))}
+  </div>
+);
+
+/* 🔥 MAIN */
+const SkeletonLoader = ({ cards = 4, rows = 5, cols = 6 }) => {
   return (
     <div className="skeleton-app-bg">
-      {/* Topbar */}
-      <div className="skeleton-topbar">
-        <div className="skeleton-logo" />
-        <div className="skeleton-brand" />
-      </div>
-      <div style={{ display: "flex", flex: 1 }}>
-        {/* Sidebar */}
-        <div className="skeleton-sidebar">
-          {[...Array(5)].map((_, i) => (
-            <div className="skeleton-sidebar-item" key={i} />
-          ))}
-        </div>
-        {/* Main Content */}
-        <div className="skeleton-main">
-          {/* Cards */}
-          <div className="skeleton-cards">
-            {[...Array(4)].map((_, i) => (
-              <div className="skeleton-card" key={i}>
-                <div className="skeleton-card-bar" />
-                <div className="skeleton-card-dot" />
-              </div>
-            ))}
-          </div>
-          {/* Table */}
-          <div className="skeleton-table">
-            <div className="skeleton-table-header">
-              {[...Array(6)].map((_, i) => (
-                <div className="skeleton-table-header-bar" key={i} />
-              ))}
-            </div>
-            {[...Array(5)].map((_, i) => (
-              <div className="skeleton-table-row" key={i}>
-                {[...Array(6)].map((_, j) => (
-                  <div className="skeleton-table-cell" key={j} />
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
+      <div className="skeleton-container">
+        <CardsSkeleton count={cards} />
+        <TableSkeleton rows={rows} cols={cols} />
       </div>
     </div>
   );

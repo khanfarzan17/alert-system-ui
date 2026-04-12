@@ -1,4 +1,4 @@
-﻿import React, { useMemo } from "react";
+﻿import React, { useMemo, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
@@ -9,8 +9,7 @@ import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import MailLockRoundedIcon from "@mui/icons-material/MailLockRounded";
 import CronSchedulerCard from "../../components/scheduler/CronSchedulerCard";
 import NodataDashboard from "./NodataDashboard";
-const findKey = (keys, match) =>
-  keys.find((k) => k.toLowerCase().replace(/\s/g, "").includes(match));
+import SkeletonLoader from "../../components/common/skeletonLoader";
 
 const getSeverity = (days) => {
   if (days <= 10) return "critical";
@@ -19,8 +18,24 @@ const getSeverity = (days) => {
 };
 
 const DashboardPage = () => {
-  const { tableData, tableColumns } = useSelector((state) => state.upload);
+  const reduxData = useSelector((state) => state.upload.tableData);
   const navigate = useNavigate();
+
+  const [data, setData] = useState([]);
+
+  // 🔥 Fetch from backend
+  useEffect(() => {
+    fetch("http://localhost:5000/api/assets")
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("API DATA:", res);
+        setData(res);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  // 🔥 Use DB data, fallback Redux
+  const tableData = data.length > 0 ? data : reduxData || [];
 
   const total = tableData.length;
 
@@ -28,28 +43,24 @@ const DashboardPage = () => {
     () =>
       tableData.filter(
         (r) =>
-          r["Days Remaining"] !== "N/A" &&
-          Number(r["Days Remaining"]) >= 0 &&
-          Number(r["Days Remaining"]) <= 50,
+          r.daysRemaining !== null &&
+          r.daysRemaining >= 0 &&
+          r.daysRemaining <= 50,
       ).length,
     [tableData],
   );
 
   const criticalCount = useMemo(
     () =>
-      tableData.filter(
-        (r) =>
-          r["Days Remaining"] !== "N/A" && Number(r["Days Remaining"]) <= 10,
-      ).length,
+      tableData.filter((r) => r.daysRemaining !== null && r.daysRemaining <= 10)
+        .length,
     [tableData],
   );
 
   const beyondFiftyCount = useMemo(
     () =>
-      tableData.filter(
-        (r) =>
-          r["Days Remaining"] !== "N/A" && Number(r["Days Remaining"]) > 50,
-      ).length,
+      tableData.filter((r) => r.daysRemaining !== null && r.daysRemaining > 50)
+        .length,
     [tableData],
   );
 
@@ -57,42 +68,32 @@ const DashboardPage = () => {
     () =>
       tableData.filter(
         (r) =>
-          r["Days Remaining"] !== "N/A" &&
-          Number(r["Days Remaining"]) > 10 &&
-          Number(r["Days Remaining"]) <= 50,
+          r.daysRemaining !== null &&
+          r.daysRemaining > 10 &&
+          r.daysRemaining <= 50,
       ).length,
     [tableData],
   );
 
-  // Column key discovery
-  const colKeys = useMemo(() => {
-    if (tableColumns.length === 0) return {};
-    const keys = tableColumns.map((c) => c.id);
-    return {
-      assetId: findKey(keys, "assetid") || findKey(keys, "asset") || keys[0],
-      owner: findKey(keys, "owner"),
-      dueDate: findKey(keys, "duedate"),
-    };
-  }, [tableColumns]);
-
-  // Top 5 urgent rows for monitor table
+  // 🔥 Top 5 urgent rows
   const monitorRows = useMemo(() => {
     if (!tableData || tableData.length === 0) return [];
+
     return [...tableData]
-      .filter((r) => r["Days Remaining"] !== "N/A")
-      .sort((a, b) => a["Days Remaining"] - b["Days Remaining"])
+      .filter((r) => r.daysRemaining !== null)
+      .sort((a, b) => a.daysRemaining - b.daysRemaining)
       .slice(0, 5)
       .map((row) => ({
-        assetId: colKeys.assetId ? row[colKeys.assetId] : "N/A",
-        owner: colKeys.owner ? row[colKeys.owner] : "N/A",
-        dueDate: colKeys.dueDate ? row[colKeys.dueDate] : "N/A",
-        days: row["Days Remaining"],
-        severity: getSeverity(row["Days Remaining"]),
+        assetId: row.assetId || "N/A",
+        owner: row.owner || "N/A",
+        dueDate: row.dueDate || "N/A",
+        days: row.daysRemaining,
+        severity: getSeverity(row.daysRemaining),
       }));
-  }, [tableData, colKeys]);
+  }, [tableData]);
 
   if (total === 0) {
-    return <NodataDashboard />;
+    return <SkeletonLoader />;
   }
 
   return (
@@ -118,7 +119,7 @@ const DashboardPage = () => {
             </div>
           </div>
           <div className="dash-card-value blue">{total}</div>
-          <div className="dash-card-footer"> Total Assests </div>
+          <div className="dash-card-footer"> Total Assets </div>
         </div>
 
         <div
@@ -127,7 +128,7 @@ const DashboardPage = () => {
           onClick={() => navigate("/alerts")}
         >
           <div className="dash-card-top">
-            <span className="dash-card-label">Due {"\u2264"} 50 Days</span>
+            <span className="dash-card-label">Due ≤ 50 Days</span>
             <div className="dash-card-icon orange">
               <NotificationsActiveIcon />
             </div>
@@ -142,9 +143,7 @@ const DashboardPage = () => {
           onClick={() => navigate("/alerts")}
         >
           <div className="dash-card-top">
-            <span className="dash-card-label">
-              Critical ({"\u2264"}10 Days)
-            </span>
+            <span className="dash-card-label">Critical (≤10 Days)</span>
             <div className="dash-card-icon red">
               <WarningAmberIcon />
             </div>
@@ -157,7 +156,6 @@ const DashboardPage = () => {
           <div className="dash-card-top">
             <span className="dash-card-label">Beyond 50 Days</span>
             <div className="dash-card-icon green">
-              {" "}
               <MailLockRoundedIcon />
             </div>
           </div>
@@ -166,9 +164,9 @@ const DashboardPage = () => {
         </div>
       </div>
 
-      {/* Bottom Row: Monitor Table + Sidebar */}
+      {/* Bottom Row */}
       <div className="dash-bottom-row">
-        {/* Asset Alert Monitor */}
+        {/* Monitor Table */}
         <div className="dash-monitor">
           <div className="dash-monitor-head">
             <h3>Asset Alert Monitor</h3>
@@ -176,9 +174,10 @@ const DashboardPage = () => {
               className="btn-view-all"
               onClick={() => navigate("/alerts")}
             >
-              View All &rarr;
+              View All →
             </button>
           </div>
+
           <table className="monitor-table">
             <thead>
               <tr>
@@ -189,18 +188,21 @@ const DashboardPage = () => {
                 <th>Status</th>
               </tr>
             </thead>
+
             <tbody>
               {monitorRows.map((row, idx) => {
                 const barPercent = Math.max(
                   0,
                   Math.min(100, (row.days / 50) * 100),
                 );
+
                 const statusLabel =
                   row.severity === "critical"
                     ? "Critical"
                     : row.severity === "warning"
                       ? "Warning"
                       : "On Track";
+
                 return (
                   <tr key={idx}>
                     <td>
@@ -209,14 +211,7 @@ const DashboardPage = () => {
                       </span>
                     </td>
                     <td>{row.owner}</td>
-                    <td
-                      style={{
-                        fontFamily: "'SF Mono','Consolas',monospace",
-                        fontSize: 12.5,
-                      }}
-                    >
-                      {row.dueDate}
-                    </td>
+                    <td>{row.dueDate}</td>
                     <td>
                       <div className="days-left-cell">
                         <span className={`days-num ${row.severity}`}>
@@ -243,13 +238,13 @@ const DashboardPage = () => {
           </table>
         </div>
 
-        {/* Sidebar: Cron Scheduler + Coverage */}
+        {/* Sidebar */}
         <div className="dash-sidebar">
           <CronSchedulerCard />
 
-          {/* Coverage Card */}
           <div className="dash-coverage">
             <h3 className="dash-coverage-title">Coverage</h3>
+
             <div className="dash-coverage-items">
               {[
                 { label: "Critical", count: criticalCount, cls: "critical" },
@@ -261,6 +256,7 @@ const DashboardPage = () => {
                     <span className="dash-cov-label">{label}</span>
                     <span className={`dash-cov-count ${cls}`}>{count}</span>
                   </div>
+
                   <div className="dash-cov-bar">
                     <div
                       className={`dash-cov-bar-fill ${cls}`}
@@ -278,7 +274,6 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
-      {/* end dash-bottom-row */}
     </div>
   );
 };

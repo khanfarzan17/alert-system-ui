@@ -31,12 +31,14 @@ const Topbar = () => {
   };
 
   const navItems = [
-    { name: "Upload", path: "/upload" },
     { name: "Dashboard", path: "/dashboard" },
+    { name: "Upload", path: "/upload" },
+
     { name: "Alerts", path: "/alerts" },
     { name: "Assets", path: "/assets" },
     { name: "Scheduler", path: "/scheduler" },
     { name: "Reports", path: "/reports" },
+    { name: "Users", path: "/users" },
   ];
 
   return (

@@ -21,8 +21,8 @@ const Sidebar = () => {
   const menuItems = [
     {
       items: [
-        { name: "Upload", path: "/upload", badge: null },
         { name: "Dashboard", path: "/dashboard", badge: null },
+        { name: "Upload", path: "/upload", badge: null },
         {
           name: "Alerts",
           path: "/alerts",
@@ -37,6 +37,7 @@ const Sidebar = () => {
         },
         { name: "Scheduler", path: "/scheduler", badge: null },
         { name: "Reports", path: "/reports", badge: null },
+        { name: "Users", path: "/users", badge: null },
       ],
     },
   ];
