@@ -56,18 +56,23 @@ export default function UploadList({ uploads = [] }) {
     <Box
       sx={{
         width: "100%",
-        borderRadius: 3,
+        borderRadius: "18px",
         border: "1px solid var(--border)",
         overflow: "hidden",
         bgcolor: "var(--surface)",
-        boxShadow: "var(--shadow)",
+        boxShadow: "var(--shadow-md)",
+        transition: "box-shadow 0.25s, border-color 0.25s",
+        "&:hover": {
+          boxShadow: "var(--shadow-lg)",
+          borderColor: "var(--border2)",
+        },
       }}
     >
       {/* ── Dark green header strip ── */}
       <Box
         sx={{
           background:
-            "linear-gradient(135deg, #166534 0%, #16a34a 50%,  #166534 100%)",
+            "linear-gradient(135deg, #0f4c20 0%, #166534 28%, #16a34a 62%, #15803d 100%)",
           px: 2.5,
           py: 1.5,
           display: "flex",
@@ -79,10 +84,12 @@ export default function UploadList({ uploads = [] }) {
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
           <Box
             sx={{
-              width: 34,
-              height: 34,
-              background: "rgba(255,255,255,0.14)",
-              borderRadius: 2,
+              width: 36,
+              height: 36,
+              background: "rgba(255,255,255,0.16)",
+              backdropFilter: "blur(8px)",
+              border: "1px solid rgba(255,255,255,0.28)",
+              borderRadius: 2.5,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -127,7 +134,10 @@ export default function UploadList({ uploads = [] }) {
             py: 0.75,
             letterSpacing: 0.3,
             flexShrink: 0,
-            "&:hover": { background: "#F1F8F1" },
+            "&:hover": {
+              background: "#e7f5e9",
+              boxShadow: "0 4px 16px rgba(22,163,74,0.28)",
+            },
           }}
         >
           Dashboard
@@ -143,8 +153,14 @@ export default function UploadList({ uploads = [] }) {
               sx={{
                 px: 2.5,
                 py: 1.25,
-                "&:hover": { bgcolor: "var(--surface2)" },
-                transition: "background 0.15s",
+                "&:hover": {
+                  bgcolor: "var(--accent-soft)",
+                  boxShadow: "inset 3px 0 0 var(--accent)",
+                  "& .MuiListItemIcon-root .MuiBox-root": {
+                    transform: "scale(1.08)",
+                  },
+                },
+                transition: "background 0.16s, box-shadow 0.16s",
               }}
             >
               <ListItemIcon sx={{ minWidth: 46 }}>
@@ -152,15 +168,18 @@ export default function UploadList({ uploads = [] }) {
                   sx={{
                     width: 36,
                     height: 36,
-
                     borderRadius: 2,
+                    background:
+                      "linear-gradient(135deg, rgba(59,130,246,0.12), rgba(14,165,120,0.08))",
+                    border: "1px solid rgba(59,130,246,0.18)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
+                    transition: "transform 0.18s cubic-bezier(.34,1.56,.64,1)",
                   }}
                 >
                   <InsertDriveFileIcon
-                    sx={{ color: "#1388a9", fontSize: 18 }}
+                    sx={{ color: "var(--accent)", fontSize: 18 }}
                   />
                 </Box>
               </ListItemIcon>
@@ -194,7 +213,15 @@ export default function UploadList({ uploads = [] }) {
                   >
                     <Typography
                       component="span"
-                      sx={{ fontSize: 10, color: "var(--text3)" }}
+                      sx={{
+                        fontSize: 10,
+                        color: "var(--text3)",
+                        background: "var(--surface2)",
+                        border: "1px solid var(--border)",
+                        padding: "1px 7px",
+                        borderRadius: "20px",
+                        lineHeight: 1.6,
+                      }}
                     >
                       {item.uploadedAt}
                     </Typography>
@@ -237,7 +264,7 @@ export default function UploadList({ uploads = [] }) {
           background: "var(--surface2)",
           borderTop: "1px solid var(--border)",
           px: 2.5,
-          py: 1,
+          py: 1.25,
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -253,13 +280,15 @@ export default function UploadList({ uploads = [] }) {
             onClick={() => setShowAll((p) => !p)}
             sx={{
               fontSize: 11,
-              fontWeight: 600,
+              fontWeight: 700,
               color: "var(--accent)",
               textTransform: "none",
               p: 0,
               minWidth: 0,
+              letterSpacing: 0.2,
               "&:hover": {
                 background: "transparent",
+                color: "var(--accent4)",
                 textDecoration: "underline",
               },
             }}

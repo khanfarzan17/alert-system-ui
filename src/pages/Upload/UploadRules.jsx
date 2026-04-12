@@ -56,7 +56,22 @@ const rules = [
 export default function UploadRules() {
   return (
     <div>
-      <div className="upload-text">Required File Format</div>
+      <div
+        className="upload-text"
+        style={{
+          fontSize: 16,
+          fontWeight: 800,
+          letterSpacing: "-0.3px",
+          background:
+            "linear-gradient(135deg, var(--accent) 0%, var(--accent4) 100%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+          marginBottom: 14,
+        }}
+      >
+        Required File Format
+      </div>
 
       <div className="upload-rules">
         {rules.map((rule, i) => {

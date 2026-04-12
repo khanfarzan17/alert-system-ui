@@ -2,6 +2,7 @@
 import { useAuth } from "../../components/context/Authcontext";
 import { setScheduler } from "../../Services/schedulerService";
 import { buildCron, buildPreview } from "../../utils/schedulerHelpers";
+import { DOW_MAP } from "../../utils/schedulerConstants";
 import ScheduleStatStrip from "../../components/scheduler/ScheduleStatStrip";
 import ScheduleTypeTabs from "../../components/scheduler/ScheduleTypeTabs";
 import TimeConfiguration from "../../components/scheduler/TimeConfiguration";
@@ -45,14 +46,13 @@ const Scheduler = () => {
   const handleSave = async () => {
     setIsSaving(true);
     const payload = {
-      type: schedType,
       hour,
       minute,
       timezone,
-      dayOfWeek,
-      dayOfMonth,
-      intervalDays,
-      cronExpression: cronExpr,
+      dayOfMonth: schedType === "monthly" ? String(dayOfMonth) : "*",
+      month: "*",
+      dayOfWeek: schedType === "weekly" ? String(DOW_MAP[dayOfWeek]) : "*",
+      intervalDays: schedType === "custom" ? intervalDays : null,
     };
     try {
       await setScheduler(payload, token);
@@ -114,11 +114,11 @@ const Scheduler = () => {
         setIntervalDays={setIntervalDays}
       />
 
-      <LivePreview
+      {/* <LivePreview
         previewText={previewText}
         cronExpr={cronExpr}
         timezone={timezone}
-      />
+      /> */}
 
       <ScheduleActionButtons
         onSave={handleSave}

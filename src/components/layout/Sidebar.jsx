@@ -36,6 +36,7 @@ const Sidebar = () => {
           badgeType: "g",
         },
         { name: "Scheduler", path: "/scheduler", badge: null },
+        { name: "Reports", path: "/reports", badge: null },
       ],
     },
   ];

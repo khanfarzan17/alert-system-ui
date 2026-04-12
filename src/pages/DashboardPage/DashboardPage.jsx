@@ -7,6 +7,7 @@ import DatasetIcon from "@mui/icons-material/Dataset";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import MailLockRoundedIcon from "@mui/icons-material/MailLockRounded";
+import CronSchedulerCard from "../../components/scheduler/CronSchedulerCard";
 const findKey = (keys, match) =>
   keys.find((k) => k.toLowerCase().replace(/\s/g, "").includes(match));
 
@@ -172,7 +173,7 @@ const DashboardPage = () => {
         </div>
       </div>
 
-      {/* Bottom Row: Monitor Table + Coverage Card */}
+      {/* Bottom Row: Monitor Table + Sidebar */}
       <div className="dash-bottom-row">
         {/* Asset Alert Monitor */}
         <div className="dash-monitor">
@@ -249,33 +250,38 @@ const DashboardPage = () => {
           </table>
         </div>
 
-        {/* Coverage Card */}
-        <div className="dash-coverage">
-          <h3 className="dash-coverage-title">Coverage</h3>
-          <div className="dash-coverage-items">
-            {[
-              { label: "Critical", count: criticalCount, cls: "critical" },
-              { label: "Warning", count: warningCount, cls: "warning" },
-              { label: "On Track", count: beyondFiftyCount, cls: "safe" },
-            ].map(({ label, count, cls }) => (
-              <div className="dash-cov-item" key={cls}>
-                <div className="dash-cov-row">
-                  <span className="dash-cov-label">{label}</span>
-                  <span className={`dash-cov-count ${cls}`}>{count}</span>
+        {/* Sidebar: Cron Scheduler + Coverage */}
+        <div className="dash-sidebar">
+          <CronSchedulerCard />
+
+          {/* Coverage Card */}
+          <div className="dash-coverage">
+            <h3 className="dash-coverage-title">Coverage</h3>
+            <div className="dash-coverage-items">
+              {[
+                { label: "Critical", count: criticalCount, cls: "critical" },
+                { label: "Warning", count: warningCount, cls: "warning" },
+                { label: "On Track", count: beyondFiftyCount, cls: "safe" },
+              ].map(({ label, count, cls }) => (
+                <div className="dash-cov-item" key={cls}>
+                  <div className="dash-cov-row">
+                    <span className="dash-cov-label">{label}</span>
+                    <span className={`dash-cov-count ${cls}`}>{count}</span>
+                  </div>
+                  <div className="dash-cov-bar">
+                    <div
+                      className={`dash-cov-bar-fill ${cls}`}
+                      style={{
+                        width:
+                          total > 0
+                            ? `${Math.round((count / total) * 100)}%`
+                            : "0%",
+                      }}
+                    ></div>
+                  </div>
                 </div>
-                <div className="dash-cov-bar">
-                  <div
-                    className={`dash-cov-bar-fill ${cls}`}
-                    style={{
-                      width:
-                        total > 0
-                          ? `${Math.round((count / total) * 100)}%`
-                          : "0%",
-                    }}
-                  ></div>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>

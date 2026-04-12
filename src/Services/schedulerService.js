@@ -16,7 +16,7 @@ function authHeaders(token) {
  * Body: { time: "HH:mm", timezone: "Asia/Karachi", enabled: true }
  */
 export async function setScheduler(payload, token) {
-  const response = await fetch(SCHEDULER_URL, {
+  const response = await fetch(`${SCHEDULER_URL}/set`, {
     method: "POST",
     headers: authHeaders(token),
     body: JSON.stringify(payload),
@@ -41,7 +41,7 @@ export async function setScheduler(payload, token) {
  * Returns the current schedule config.
  */
 export async function getScheduler(token) {
-  const response = await fetch(SCHEDULER_URL, {
+  const response = await fetch(`${SCHEDULER_URL}/get`, {
     method: "GET",
     headers: authHeaders(token),
   });
@@ -49,7 +49,8 @@ export async function getScheduler(token) {
   if (!response.ok) return null;
 
   try {
-    return await response.json();
+    const json = await response.json();
+    return json?.data || null;
   } catch {
     return null;
   }

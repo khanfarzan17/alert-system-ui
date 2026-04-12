@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { TIMEZONES, DOW_MAP } from "../../utils/schedulerConstants";
 import { pad } from "../../utils/schedulerHelpers";
-import { card, selectStyle } from "../../utils/schedulerStyles";
+import { selectStyle } from "../../utils/schedulerStyles";
+import AccessTimeFilledRoundedIcon from "@mui/icons-material/AccessTimeFilledRounded";
 
 const TimeConfiguration = ({
   schedType,
@@ -18,8 +19,28 @@ const TimeConfiguration = ({
   intervalDays,
   setIntervalDays,
 }) => {
+  const [isCardHovered, setIsCardHovered] = useState(false);
+
   return (
-    <div style={card}>
+    <div
+      style={{
+        background: "var(--surface)",
+        border: `1.5px solid rgba(75,123,245, ${isCardHovered ? "0.24" : "0.12"})`,
+        borderRadius: "20px",
+        padding: "18px 20px",
+        marginBottom: 14,
+        boxShadow: isCardHovered
+          ? "0 12px 36px rgba(75, 123, 245, 0.15)"
+          : "0 4px 16px rgba(75, 123, 245, 0.06)",
+        transition: "all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1)",
+        position: "relative",
+        overflow: "hidden",
+        cursor: "default",
+        transform: isCardHovered ? "translateY(-2px)" : "translateY(0)",
+      }}
+      onMouseEnter={() => setIsCardHovered(true)}
+      onMouseLeave={() => setIsCardHovered(false)}
+    >
       <div
         style={{
           display: "flex",
@@ -32,14 +53,16 @@ const TimeConfiguration = ({
           style={{
             width: 30,
             height: 30,
-            borderRadius: 8,
-            background: "rgba(75,123,245,0.14)",
+            borderRadius: 10,
+            background: "rgba(75,123,245,0.16)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          🕐
+          <AccessTimeFilledRoundedIcon
+            style={{ fontSize: 16, color: "#4B7BF5" }}
+          />
         </div>
         <div>
           <div

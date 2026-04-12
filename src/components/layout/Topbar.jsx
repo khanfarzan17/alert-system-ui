@@ -36,6 +36,7 @@ const Topbar = () => {
     { name: "Alerts", path: "/alerts" },
     { name: "Assets", path: "/assets" },
     { name: "Scheduler", path: "/scheduler" },
+    { name: "Reports", path: "/reports" },
   ];
 
   return (
