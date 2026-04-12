@@ -35,7 +35,7 @@ const Sidebar = () => {
           badge: assetCount > 0 ? String(assetCount) : null,
           badgeType: "g",
         },
-        { name: "Settings", path: "/settings", badge: null },
+        { name: "Scheduler", path: "/scheduler", badge: null },
       ],
     },
   ];

@@ -7,7 +7,7 @@ import LoginPage from "../pages/Auth/LoginPage";
 import UploadPage from "../pages/Upload/UploadPage";
 import DashboardPage from "../pages/DashboardPage/DashboardPage";
 import AlertPage from "../pages/Alerts/AlertPage";
-import Settings from "../pages/settings/settings";
+import Scheduler from "../pages/Scheduler/scheduler";
 import NotFound from "../pages/NotFound/NotFound";
 import MainLayout from "../layout/MainLayout";
 import AssetPage from "../pages/Assets/AssetPage";
@@ -59,9 +59,9 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/settings"
+          path="/scheduler"
           element={
-            isAuthenticated ? <Settings /> : <Navigate to="/login" replace />
+            isAuthenticated ? <Scheduler /> : <Navigate to="/login" replace />
           }
         />
       </Route>
