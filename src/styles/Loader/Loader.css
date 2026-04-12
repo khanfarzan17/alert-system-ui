@@ -1,0 +1,122 @@
+.splash {
+  background: #0d1117;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  position: relative;
+}
+.splash-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    rgba(75, 123, 245, 0.07) 0%,
+    transparent 65%
+  );
+}
+.logo-anim {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 20px;
+}
+.logo-anim-mark {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #4b7bf5, #10b981);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: logoPulse 2s ease-in-out infinite;
+}
+.logo-anim-mark svg {
+  width: 32px;
+  height: 32px;
+}
+.logo-anim-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 22px;
+  border: 2px solid transparent;
+  border-top-color: #4b7bf5;
+  border-right-color: #10b981;
+  animation: spin 1.2s linear infinite;
+}
+@keyframes logoPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(75, 123, 245, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(75, 123, 245, 0);
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.splash-brand {
+  font-size: 22px;
+  font-weight: 800;
+  color: #e6edf3;
+  letter-spacing: -0.4px;
+  margin-bottom: 5px;
+}
+.splash-brand span {
+  color: #4b7bf5;
+}
+.splash-sub {
+  font-size: 12px;
+  color: #8b949e;
+  margin-bottom: 28px;
+}
+.splash-bar-wrap {
+  width: 200px;
+  height: 3px;
+  background: #1c2330;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.splash-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #4b7bf5, #10b981);
+  border-radius: 2px;
+  animation: barFill 2.8s ease-in-out infinite;
+}
+@keyframes barFill {
+  0% {
+    width: 0%;
+  }
+  70% {
+    width: 85%;
+  }
+  85% {
+    width: 90%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+.splash-msg {
+  font-size: 10.5px;
+  color: #484f58;
+  margin-top: 10px;
+  min-height: 16px;
+  animation: msgCycle 2.8s steps(1) infinite;
+}
+@keyframes msgCycle {
+  0% {
+    content: "";
+  }
+}
+#splash-msg-el {
+  font-size: 10.5px;
+  color: #484f58;
+  margin-top: 10px;
+}

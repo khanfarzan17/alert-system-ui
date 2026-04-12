@@ -1,0 +1,118 @@
+.skeleton-app-bg {
+  background: #10141a;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+.skeleton-topbar {
+  height: 56px;
+  background: #181d25;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  border-bottom: 1px solid #23272f;
+}
+.skeleton-logo {
+  width: 40px;
+  height: 40px;
+  background: #232e3e;
+  border-radius: 12px;
+  margin-right: 16px;
+}
+.skeleton-brand {
+  width: 100px;
+  height: 24px;
+  background: #232e3e;
+  border-radius: 6px;
+}
+.skeleton-sidebar {
+  width: 220px;
+  background: #181d25;
+  height: calc(100vh - 56px);
+  padding: 24px 0;
+  border-right: 1px solid #23272f;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.skeleton-sidebar-item {
+  width: 160px;
+  height: 32px;
+  background: #232e3e;
+  border-radius: 8px;
+  margin: 8px 24px;
+}
+.skeleton-main {
+  flex: 1;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.skeleton-cards {
+  display: flex;
+  gap: 24px;
+}
+.skeleton-card {
+  flex: 1;
+  height: 120px;
+  background: #181d25;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+.skeleton-card-bar {
+  width: 80%;
+  height: 18px;
+  background: #232e3e;
+  border-radius: 6px;
+}
+.skeleton-card-dot {
+  width: 32px;
+  height: 24px;
+  background: #232e3e;
+  border-radius: 8px;
+}
+.skeleton-table {
+  background: #181d25;
+  border-radius: 16px;
+  padding: 24px;
+  min-height: 200px;
+}
+.skeleton-table-header {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.skeleton-table-header-bar {
+  width: 120px;
+  height: 16px;
+  background: #232e3e;
+  border-radius: 6px;
+}
+.skeleton-table-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.skeleton-table-cell {
+  width: 100px;
+  height: 14px;
+  background: #232e3e;
+  border-radius: 6px;
+}
+@media (max-width: 900px) {
+  .skeleton-cards {
+    flex-direction: column;
+  }
+  .skeleton-sidebar {
+    width: 60px;
+  }
+  .skeleton-sidebar-item {
+    width: 40px;
+  }
+}
