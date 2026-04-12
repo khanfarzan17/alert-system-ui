@@ -8,6 +8,7 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import MailLockRoundedIcon from "@mui/icons-material/MailLockRounded";
 import CronSchedulerCard from "../../components/scheduler/CronSchedulerCard";
+import NodataDashboard from "./NodataDashboard";
 const findKey = (keys, match) =>
   keys.find((k) => k.toLowerCase().replace(/\s/g, "").includes(match));
 
@@ -91,15 +92,7 @@ const DashboardPage = () => {
   }, [tableData, colKeys]);
 
   if (total === 0) {
-    return (
-      <div className="dashboard-page">
-        <div className="dash-empty">
-          <div className="dash-empty-icon">{"\uD83D\uDCCA"}</div>
-          <h2>No Data Yet</h2>
-          <p>Upload an asset file to see your dashboard summary.</p>
-        </div>
-      </div>
-    );
+    return <NodataDashboard />;
   }
 
   return (

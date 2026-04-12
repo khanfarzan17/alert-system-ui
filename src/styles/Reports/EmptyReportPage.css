@@ -1,0 +1,100 @@
+/* =====================
+   Empty Reports Page
+===================== */
+
+.erp-wrapper {
+  width: 100%;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+  padding: 40px 24px;
+}
+
+/* Icon */
+.erp-icon-wrap {
+  width: 90px;
+  height: 90px;
+  background: #0f1e2e;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.erp-icon {
+  color: var(--accent, #4f8ef7);
+  stroke-width: 1.5;
+}
+
+/* Heading */
+.erp-heading {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text1, #eef2ff);
+  margin: 0;
+}
+
+/* Subtext */
+.erp-subtext {
+  font-size: 14px;
+  color: var(--text2, #8fa3bf);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 380px;
+}
+
+/* Upload button */
+.erp-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--accent, #4f8ef7);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.erp-upload-btn:hover {
+  background-color: #3b82f6;
+}
+
+/* Preview cards */
+.erp-preview-cards {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.erp-preview-card {
+  background: var(--surface2, #141d2e);
+  border: 1px solid var(--border, #1a2438);
+  border-radius: 12px;
+  padding: 18px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 120px;
+}
+
+.erp-preview-icon {
+  color: var(--accent, #4f8ef7);
+  stroke-width: 1.5;
+}
+
+.erp-preview-label {
+  font-size: 12px;
+  color: var(--text2, #8fa3bf);
+  line-height: 1.5;
+}

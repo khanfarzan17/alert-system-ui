@@ -16,6 +16,7 @@ import {
   Area,
 } from "recharts";
 import "../../styles/Reports/ReportsPage.css";
+import EmptyReportPage from "./EmptyReportPage";
 
 const findKey = (keys, match) =>
   keys.find((k) => k.toLowerCase().replace(/\s/g, "").includes(match));
@@ -228,11 +229,13 @@ const ReportsPage = () => {
   if (tableData.length === 0) {
     return (
       <div className="rp-page">
-        <div className="rp-empty">
-          <div className="rp-empty-icon">📊</div>
-          <h2>No Data to Report</h2>
-          <p>Upload an asset file to generate analytics and reports.</p>
+        <div className="rp-header">
+          <h1>Reports</h1>
+          <p className="rp-header-sub">
+            Analytics and insights from your asset data
+          </p>
         </div>
+        <EmptyReportPage />
       </div>
     );
   }
@@ -410,18 +413,21 @@ const ReportsPage = () => {
                   name="Overdue"
                   stackId="a"
                   fill="#dc2626"
+                  activeBar={false}
                 />
                 <Bar
                   dataKey="critical"
                   name="Critical"
                   stackId="a"
                   fill="#ef4444"
+                  activeBar={false}
                 />
                 <Bar
                   dataKey="warning"
                   name="Warning"
                   stackId="a"
                   fill="#f97316"
+                  activeBar={false}
                 />
                 <Bar
                   dataKey="safe"
@@ -429,6 +435,7 @@ const ReportsPage = () => {
                   stackId="a"
                   fill="#22c55e"
                   radius={[4, 4, 0, 0]}
+                  activeBar={false}
                 />
               </BarChart>
             </ResponsiveContainer>
@@ -465,12 +472,14 @@ const ReportsPage = () => {
                   name="Total Assets"
                   fill="#3b82f6"
                   radius={[4, 4, 0, 0]}
+                  activeBar={false}
                 />
                 <Bar
                   dataKey="alertable"
                   name="Alert-Eligible"
                   fill="#ef4444"
                   radius={[4, 4, 0, 0]}
+                  activeBar={false}
                 />
               </BarChart>
             </ResponsiveContainer>

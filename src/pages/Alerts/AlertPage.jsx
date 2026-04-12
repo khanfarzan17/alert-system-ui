@@ -66,7 +66,17 @@ const AlertPage = () => {
   }, [tableColumns]);
 
   if (alertData.length === 0) {
-    return <EmptyAlerts />;
+    return (
+      <div className="alert-page">
+        <div className="alert-header">
+          <h1>Alerts</h1>
+          <p style={{ fontSize: 13, color: "var(--text3)", margin: 0 }}>
+            Active alerts triggered by asset due dates
+          </p>
+        </div>
+        <EmptyAlerts />
+      </div>
+    );
   }
 
   return (

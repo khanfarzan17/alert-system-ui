@@ -1,59 +1,51 @@
-import { Box, Typography, Paper, Button } from "@mui/material";
-import NotificationsOffRoundedIcon from "@mui/icons-material/NotificationsOffRounded";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Hexagon, Plus } from "lucide-react";
+import "../../styles/Assets/EmptyAssetPage.css";
 
-export default function EmptyAssetPage({ onUploadClick }) {
+export default function EmptyAssetPage() {
+  const navigate = useNavigate();
+
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "var(--bg)",
-      }}
-    >
-      <Paper
-        elevation={3}
-        sx={{
-          p: 5,
-          textAlign: "center",
-          borderRadius: 3,
-          maxWidth: 400,
-          transition: "0.3s",
-          bgcolor: "var(--surface)",
-          color: "var(--text1)",
-          "&:hover": { transform: "translateY(-4px)" },
-        }}
-      >
-        <NotificationsOffRoundedIcon
-          sx={{ fontSize: 60, color: "#9e9e9e", mb: 2 }}
-        />
+    <div className="eap-wrapper">
+      {/* Hexagon icon */}
+      <div className="eap-icon-wrap">
+        <Hexagon size={38} className="eap-icon" />
+      </div>
 
-        <Typography variant="h5" fontWeight={600} gutterBottom>
-          No Assets
-        </Typography>
+      <h2 className="eap-heading">No assets found</h2>
 
-        <Typography variant="body1" color="text.secondary">
-          Upload an asset file first to see assets here.
-        </Typography>
+      <p className="eap-subtext">
+        Your asset register is empty. Upload a CSV or XLSX
+        <br />
+        file with your asset data to start tracking due dates.
+      </p>
 
-        {onUploadClick && (
-          <Button
-            variant="contained"
-            color="success"
-            onClick={onUploadClick}
-            sx={{
-              mt: 3,
-              px: 3,
-              borderRadius: 2,
-              textTransform: "none",
-              fontWeight: 600,
-            }}
-          >
-            Upload File
-          </Button>
-        )}
-      </Paper>
-    </Box>
+      <button className="eap-upload-btn" onClick={() => navigate("/upload")}>
+        <Plus size={15} />
+        Upload asset file
+      </button>
+
+      {/* Info cards */}
+      <div className="eap-info-cards">
+        <div className="eap-info-card">
+          <span className="eap-info-label">REQUIRED COLS</span>
+          <span className="eap-info-val accent">asset_id</span>
+          <span className="eap-info-val accent">owner</span>
+          <span className="eap-info-val accent">due_date</span>
+        </div>
+        <div className="eap-info-card">
+          <span className="eap-info-label">FORMATS</span>
+          <span className="eap-info-val">.xlsx</span>
+          <span className="eap-info-val">.csv</span>
+          <span className="eap-info-val">.xls</span>
+        </div>
+        <div className="eap-info-card">
+          <span className="eap-info-label">MAX SIZE</span>
+          <span className="eap-info-big">50</span>
+          <span className="eap-info-unit">MB</span>
+        </div>
+      </div>
+    </div>
   );
 }

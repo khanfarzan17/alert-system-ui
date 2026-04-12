@@ -1,0 +1,120 @@
+/* =====================
+   Empty Asset Page
+===================== */
+
+.eap-wrapper {
+  width: 100%;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+  padding: 40px 24px;
+}
+
+/* Hexagon icon */
+.eap-icon-wrap {
+  width: 90px;
+  height: 90px;
+  background: #162218;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eap-icon {
+  color: #22c55e;
+  stroke-width: 1.5;
+}
+
+/* Heading */
+.eap-heading {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text1, #eef2ff);
+  margin: 0;
+}
+
+/* Subtext */
+.eap-subtext {
+  font-size: 14px;
+  color: var(--text2, #8fa3bf);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 400px;
+}
+
+/* Upload button */
+.eap-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--accent, #4f8ef7);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.eap-upload-btn:hover {
+  background-color: #3b82f6;
+}
+
+/* Info cards row */
+.eap-info-cards {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.eap-info-card {
+  background: var(--surface2, #141d2e);
+  border: 1px solid var(--border, #1a2438);
+  border-radius: 12px;
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 130px;
+}
+
+.eap-info-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: var(--text3, #9eacbd);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.eap-info-val {
+  font-size: 13px;
+  color: var(--text2, #8fa3bf);
+}
+
+.eap-info-val.accent {
+  color: var(--accent, #4f8ef7);
+  font-weight: 500;
+}
+
+.eap-info-big {
+  font-size: 40px;
+  font-weight: 800;
+  color: #22c55e;
+  line-height: 1;
+}
+
+.eap-info-unit {
+  font-size: 13px;
+  color: var(--text2, #8fa3bf);
+}
