@@ -307,8 +307,10 @@ export default function EnhancedTable({
   );
 
   const getRowClassName = (params) => {
-    const days = params.row["Days Remaining"];
+    let days = params.row["Days Remaining"];
     if (days === undefined || days === "N/A") return "";
+    days = Number(days);
+    if (isNaN(days)) return "";
     if (days <= 10) return "row-critical";
     if (days <= 50) return "row-warning";
     return "";

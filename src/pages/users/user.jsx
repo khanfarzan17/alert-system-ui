@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "../../styles/users/user.css";
-import { useTheme } from "../../components/context/ThemeContext";
 import SkeletonLoader from "../../components/common/skeletonLoader";
 
-// Helper
+/* 🔥 Helpers */
 const getInitials = (name = "") =>
   name
     .split(" ")
@@ -12,65 +11,54 @@ const getInitials = (name = "") =>
     .toUpperCase()
     .slice(0, 2);
 
-// Avatar color generator
-const getAvatarStyle = (name) => {
-  const colors = [
-    { bg: "#DBEAFE", text: "#1D4ED8" },
-    { bg: "#EDE9FE", text: "#6D28D9" },
-    { bg: "#D1FAE5", text: "#065F46" },
-    { bg: "#FEF3C7", text: "#92400E" },
-    { bg: "#FEE2E2", text: "#991B1B" },
-  ];
-  const index = name?.length % colors.length;
-  return colors[index];
-};
-// 🔥 helper for card color type
 const getCardClass = (stats) => {
-  if (stats.critical > 0) return "user-big-card critical";
-  if (stats.alerts > 0) return "user-big-card warning";
-  if (stats.total > 0) return "user-big-card safe";
-  return "user-big-card default";
+  // Normalize values to numbers to avoid string/null bugs
+  const total = Number(stats?.total) || 0;
+  const critical = Number(stats?.critical) || 0;
+  const alerts = Number(stats?.alerts) || 0;
+  // Debug: check what is coming in
+  console.log("getCardClass stats:", stats, { total, critical, alerts });
+  if (critical > 0) return "user-card critical";
+  if (alerts > 0) return "user-card warning";
+  if (total > 0) return "user-card safe";
+  return "user-card default";
 };
 
-// Card
+/* 🔥 CARD */
 const UserCard = ({ name, role, email, stats }) => {
-  const avatar = getAvatarStyle(name);
-
   return (
     <div className={getCardClass(stats)}>
-      <div
-        className="ubig-av"
-        style={{ background: avatar.bg, color: avatar.text }}
-      >
-        {getInitials(name)}
-      </div>
-
-      <div className="ubig-name">{name}</div>
-      <div className="ubig-role">{role}</div>
-
-      {email && <div className="ubig-email">{email}</div>}
-
-      <div className="ubig-stats">
-        <div className="ubig-stat">
-          <div className="ubig-stat-val assets">{stats.total}</div>
-          <div className="ubig-stat-lbl">Assets</div>
+      {/* TOP
+      <div className="uc-top">
+        <div className="uc-avatar">{getInitials(name)}</div>
+        <div className="uc-role">{role}</div>
+      </div> */}
+      {/* NAME */}
+      <div className="uc-name">{name}</div>
+      {/* EMAIL */}
+      {email && <div className="uc-email">{email}</div>}
+      {/* STATS */}
+      <div className="uc-stats">
+        <div className="uc-stat">
+          <span className="uc-val">{stats.total}</span>
+          <span className="uc-lbl">Assets</span>
         </div>
 
-        <div className="ubig-stat">
-          <div className="ubig-stat-val critical">{stats.critical}</div>
-          <div className="ubig-stat-lbl">Critical</div>
+        <div className="uc-stat">
+          <span className="uc-val critical">{stats.critical}</span>
+          <span className="uc-lbl">Critical</span>
         </div>
 
-        <div className="ubig-stat">
-          <div className="ubig-stat-val alerts">{stats.alerts}</div>
-          <div className="ubig-stat-lbl">Alerts</div>
+        <div className="uc-stat">
+          <span className="uc-val alerts">{stats.alerts}</span>
+          <span className="uc-lbl">Alerts</span>
         </div>
       </div>
     </div>
   );
 };
 
-// Grid
+/* 🔥 GRID */
 const UserGrid = ({ users }) => (
   <div className="users-grid">
     {users.map((u) => (
@@ -79,7 +67,7 @@ const UserGrid = ({ users }) => (
   </div>
 );
 
-// Main Page
+/* 🔥 MAIN */
 const UserPage = () => {
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -94,7 +82,6 @@ const UserPage = () => {
       .catch(() => setLoading(false));
   }, []);
 
-  // Owners
   const owners = useMemo(() => {
     const map = {};
 
@@ -120,7 +107,6 @@ const UserPage = () => {
     return Object.values(map);
   }, [assets]);
 
-  // Risk Engineers
   const riskEngineers = useMemo(() => {
     const map = {};
 
@@ -148,36 +134,30 @@ const UserPage = () => {
 
   return (
     <div className="page">
-      {/* 🔥 Header */}
+      {/* HEADER */}
       <div className="ph">
-        <div className="ph-left">
+        <div>
           <div className="ph-title">Users & Stakeholders</div>
           <div className="ph-sub">Manage email mappings, roles and access</div>
         </div>
       </div>
 
-      {/* 🔥 Content */}
       {loading ? (
         <SkeletonLoader />
       ) : (
         <div className="user-sections">
-          {/* Owners */}
           <div className="user-section">
             <div className="user-section-header">
-              <h2 className="user-section-title">Asset Owners</h2>
-              <span className="user-section-count">{owners.length} users</span>
+              <h2>Asset Owners</h2>
+              <span>{owners.length} users</span>
             </div>
-
             <UserGrid users={owners} />
           </div>
 
-          {/* Risk Engineers */}
           <div className="user-section">
             <div className="user-section-header">
-              <h2 className="user-section-title">Risk Engineers</h2>
-              <span className="user-section-count">
-                {riskEngineers.length} users
-              </span>
+              <h2>Risk Engineers</h2>
+              <span>{riskEngineers.length} users</span>
             </div>
             <UserGrid users={riskEngineers} />
           </div>

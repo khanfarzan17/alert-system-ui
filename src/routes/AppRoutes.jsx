@@ -14,6 +14,7 @@ import AssetPage from "../pages/Assets/AssetPage";
 import ReportsPage from "../pages/Reports/ReportsPage";
 import LoaderTestPage from "../pages/LoaderTestPage";
 import UserPage from "../pages/users/user";
+import EmailConfigPage from "../pages/EmailConfig/EmailConfigPage";
 
 const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
@@ -78,6 +79,16 @@ const AppRoutes = () => {
           path="/users"
           element={
             isAuthenticated ? <UserPage /> : <Navigate to="/login" replace />
+          }
+        />
+        <Route
+          path="/email-config"
+          element={
+            isAuthenticated ? (
+              <EmailConfigPage />
+            ) : (
+              <Navigate to="/login" replace />
+            )
           }
         />
         <Route path="/loader-test" element={<LoaderTestPage />} />

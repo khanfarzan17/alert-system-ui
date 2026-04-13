@@ -39,6 +39,7 @@ const Topbar = () => {
     { name: "Scheduler", path: "/scheduler" },
     { name: "Reports", path: "/reports" },
     { name: "Users", path: "/users" },
+    { name: "Email ", path: "/email-config" },
   ];
 
   return (

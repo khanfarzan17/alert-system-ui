@@ -38,6 +38,7 @@ const Sidebar = () => {
         { name: "Scheduler", path: "/scheduler", badge: null },
         { name: "Reports", path: "/reports", badge: null },
         { name: "Users", path: "/users", badge: null },
+        { name: "Email", path: "/email-config", badge: null },
       ],
     },
   ];
